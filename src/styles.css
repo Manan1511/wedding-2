@@ -156,6 +156,9 @@ main {
   opacity: 0;
   filter: drop-shadow(0 9px 18px rgb(68 56 37 / 13%));
   transform: translate(-50%, -50%);
+}
+
+.invitation-intro[data-artwork-ready="true"] .intro-bouquet {
   animation: intro-bouquet-bloom 570ms cubic-bezier(.2, .7, .24, 1) var(--intro-bouquet-delay) both;
 }
 

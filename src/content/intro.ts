@@ -8,3 +8,13 @@ export const introTimeline = {
 export function shouldPlayIntro(prefersReducedMotion: boolean): boolean {
   return !prefersReducedMotion;
 }
+
+export async function waitForIntroArtwork(
+  images: readonly Pick<HTMLImageElement, 'decode'>[],
+): Promise<boolean> {
+  const results = await Promise.allSettled(
+    images.map((image) => Promise.resolve().then(() => image.decode())),
+  );
+
+  return results.every((result) => result.status === 'fulfilled');
+}

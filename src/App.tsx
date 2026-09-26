@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties, FormEvent, ReactNode } from 'react';
 import { buildRsvpMessage, buildWhatsAppUrl, isValidRsvpResponse } from './content/rsvp';
 import type { RsvpResponse } from './content/rsvp';
 import { getCountdown } from './content/time';
-import { introTimeline, shouldPlayIntro } from './content/intro';
+import { introTimeline, shouldPlayIntro, waitForIntroArtwork } from './content/intro';
 import { coupleNames, wedding } from './content/wedding';
 
 const ceremonyTime = new Date(wedding.ceremony.dateTime);
@@ -47,10 +47,15 @@ function BranchMark({ className = '' }: { className?: string }) {
 function InvitationIntro({
   phase,
   onSkip,
+  onArtworkReady,
+  artworkReady,
 }: {
   phase: 'playing' | 'exiting';
   onSkip: () => void;
+  onArtworkReady: (decoded: boolean) => void;
+  artworkReady: boolean;
 }) {
+  const introRef = useRef<HTMLDivElement>(null);
   const skipButtonRef = useRef<HTMLButtonElement>(null);
   const timing = {
     '--intro-bouquet-delay': `${introTimeline.bouquetAtMs}ms`,
@@ -60,27 +65,42 @@ function InvitationIntro({
     skipButtonRef.current?.focus({ preventScroll: true });
   }, []);
 
+  useEffect(() => {
+    let cancelled = false;
+    const images = Array.from(introRef.current?.querySelectorAll('img') ?? []);
+
+    void waitForIntroArtwork(images).then((decoded) => {
+      if (!cancelled) onArtworkReady(decoded);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [onArtworkReady]);
+
   return (
     <div
+      ref={introRef}
       className={`invitation-intro ${phase === 'exiting' ? 'is-exiting' : ''}`}
       role="dialog"
       aria-modal="true"
       aria-label={`Opening ${coupleNames} wedding invitation`}
+      data-artwork-ready={artworkReady}
       style={timing}
     >
       <div className="intro-curtain intro-curtain-left" aria-hidden="true">
         <picture className="intro-curtain-art">
           <source media="(orientation: landscape)" srcSet={wedding.artwork.curtainWide} />
-          <img src={wedding.artwork.curtain} alt="" loading="lazy" />
+          <img src={wedding.artwork.curtain} alt="" loading="lazy" fetchPriority="high" />
         </picture>
       </div>
       <div className="intro-curtain intro-curtain-right" aria-hidden="true">
         <picture className="intro-curtain-art">
           <source media="(orientation: landscape)" srcSet={wedding.artwork.curtainWide} />
-          <img src={wedding.artwork.curtain} alt="" loading="lazy" />
+          <img src={wedding.artwork.curtain} alt="" loading="lazy" fetchPriority="high" />
         </picture>
       </div>
-      <img className="intro-bouquet" src={wedding.artwork.bouquet} alt="" aria-hidden="true" loading="lazy" />
+      <img className="intro-bouquet" src={wedding.artwork.bouquet} alt="" aria-hidden="true" loading="lazy" fetchPriority="high" />
 
       <button className="intro-skip" ref={skipButtonRef} type="button" onClick={onSkip} disabled={phase === 'exiting'}>
         Skip intro <span aria-hidden="true">↗</span>
@@ -312,10 +332,20 @@ function ClosingSection() {
 export default function App() {
   const heroRef = useRef<HTMLElement>(null);
   const focusHeroAfterIntro = useRef(false);
+  const [introArtworkReady, setIntroArtworkReady] = useState(false);
   const [introPhase, setIntroPhase] = useState<'playing' | 'exiting' | 'done'>(() => (
     shouldPlayIntro(window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'playing' : 'done'
   ));
   const introIsActive = introPhase !== 'done';
+
+  const handleIntroArtworkReady = useCallback((decoded: boolean) => {
+    if (decoded) {
+      setIntroArtworkReady(true);
+      return;
+    }
+
+    setIntroPhase('done');
+  }, []);
 
   function skipIntro() {
     focusHeroAfterIntro.current = true;
@@ -329,10 +359,10 @@ export default function App() {
   }, [introIsActive]);
 
   useEffect(() => {
-    if (introPhase !== 'playing') return;
+    if (introPhase !== 'playing' || !introArtworkReady) return;
     const timer = window.setTimeout(() => setIntroPhase('exiting'), introTimeline.curtainOpenAtMs);
     return () => window.clearTimeout(timer);
-  }, [introPhase]);
+  }, [introArtworkReady, introPhase]);
 
   useEffect(() => {
     if (introPhase !== 'exiting') return;
@@ -396,7 +426,7 @@ export default function App() {
         <section className="hero" id="home" aria-labelledby="hero-title" ref={heroRef} tabIndex={-1}>
           <picture className="hero-art" aria-hidden="true">
             <source media="(min-width: 760px)" srcSet={wedding.artwork.heroWide} />
-            <img src={wedding.artwork.hero} alt="" loading="lazy" />
+            <img src={wedding.artwork.hero} alt="" loading="lazy" fetchPriority="high" />
           </picture>
           <div className="hero-grain" aria-hidden="true" />
           <div className="hero-topline">
@@ -463,7 +493,14 @@ export default function App() {
         <RsvpSection />
         <ClosingSection />
       </main>
-      {introIsActive && <InvitationIntro phase={introPhase} onSkip={skipIntro} />}
+      {introIsActive && (
+        <InvitationIntro
+          phase={introPhase}
+          onSkip={skipIntro}
+          onArtworkReady={handleIntroArtworkReady}
+          artworkReady={introArtworkReady}
+        />
+      )}
     </>
   );
 }

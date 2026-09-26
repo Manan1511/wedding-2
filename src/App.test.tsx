@@ -32,11 +32,19 @@ describe('wedding invitation content', () => {
     }
   });
 
-  it('lazy-loads every image in the rendered invitation', () => {
+  it('keeps every image lazy while prioritizing only the opening and hero artwork', () => {
     const imageTags = [...renderInvitation().matchAll(/<img\b[^>]*>/g)].map(([tag]) => tag);
+    const prioritizedImages = imageTags.filter((tag) => /\sfetchPriority="high"/.test(tag));
+    const closingImage = imageTags.find((tag) => tag.includes('wedding-blessing-sketch.webp'));
 
-    expect(imageTags.length).toBeGreaterThan(0);
+    expect(imageTags).toHaveLength(5);
     expect(imageTags.every((tag) => /\sloading="lazy"/.test(tag))).toBe(true);
+    expect(prioritizedImages).toHaveLength(4);
+    expect(closingImage).not.toMatch(/\sfetchPriority="high"/);
+  });
+
+  it('keeps the opening animation closed until its artwork has decoded', () => {
+    expect(renderInvitation()).toMatch(/<div class="invitation-intro[^\"]*"[^>]*data-artwork-ready="false"/);
   });
 
   it('uses a text label and decorative arrow for the scroll cue', () => {

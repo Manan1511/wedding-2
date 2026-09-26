@@ -51,12 +51,12 @@ export const wedding: WeddingConfig = {
   },
   rsvpWhatsAppNumber: 'REPLACE_WITH_HOST_NUMBER',
   artwork: {
-    hero: '/images/wedding-hero-sketch.jpg',
-    heroWide: '/images/wedding-hero-wide-sketch.jpg',
-    bouquet: '/images/wedding-bouquet-sketch.png',
-    closing: '/images/wedding-blessing-sketch.jpg',
-    curtain: '/images/wedding-curtain-watercolor.png',
-    curtainWide: '/images/wedding-curtain-watercolor-wide.png',
+    hero: '/images/wedding-hero-sketch.webp',
+    heroWide: '/images/wedding-hero-wide-sketch.webp',
+    bouquet: '/images/wedding-bouquet-sketch.webp',
+    closing: '/images/wedding-blessing-sketch.webp',
+    curtain: '/images/wedding-curtain-watercolor.webp',
+    curtainWide: '/images/wedding-curtain-watercolor-wide.webp',
   },
 };
 

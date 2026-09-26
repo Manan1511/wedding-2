@@ -1,12 +1,30 @@
 import { describe, expect, it } from 'vitest';
+import invitationHtml from '../../index.html?raw';
 import { buildRsvpMessage, buildWhatsAppUrl, isValidRsvpResponse } from './rsvp';
 import { getCountdown } from './time';
 import { wedding } from './wedding';
 
 describe('wedding intro artwork', () => {
-  it('points to the original watercolor curtain asset', () => {
-    expect(wedding.artwork.curtain).toBe('/images/wedding-curtain-watercolor.png');
-    expect(wedding.artwork.curtainWide).toBe('/images/wedding-curtain-watercolor-wide.png');
+  it('uses compressed WebP files for every image served by the invitation', () => {
+    expect(Object.values(wedding.artwork).every((imagePath) => imagePath.endsWith('.webp'))).toBe(true);
+  });
+
+  it('preloads the responsive opening and hero assets, but not the closing image', () => {
+    const html = invitationHtml;
+    const preloadTags = [...html.matchAll(/<link\b[^>]*rel="preload"[^>]*>/g)].map(([tag]) => tag);
+    const initialArtwork = [
+      wedding.artwork.curtain,
+      wedding.artwork.curtainWide,
+      wedding.artwork.bouquet,
+      wedding.artwork.hero,
+      wedding.artwork.heroWide,
+    ];
+
+    expect(preloadTags).toHaveLength(initialArtwork.length);
+    for (const imagePath of initialArtwork) {
+      expect(preloadTags.some((tag) => tag.includes(`href="${imagePath}"`))).toBe(true);
+    }
+    expect(preloadTags.some((tag) => tag.includes(`href="${wedding.artwork.closing}"`))).toBe(false);
   });
 });
 
