@@ -65,6 +65,17 @@ describe('wedding invitation content', () => {
     expect(scriptWordStyle).not.toMatch(/padding-left\s*:/);
   });
 
+  it('sets the couple monogram as the browser tab icon', () => {
+    const document = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+
+    expect(document).toMatch(/<link rel="icon" type="image\/svg\+xml" href="\/favicon\.svg"\s*\/>/);
+
+    const favicon = readFileSync(new URL('../public/favicon.svg', import.meta.url), 'utf8');
+    expect(favicon).toContain('viewBox="0 0 64 64"');
+    expect(favicon).toContain('>T');
+    expect(favicon).toContain('>S');
+  });
+
   it('uses no em dash in the invitation copy', () => {
     expect(renderInvitation()).not.toContain(String.fromCharCode(0x2014));
   });
