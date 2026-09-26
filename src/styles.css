@@ -812,7 +812,6 @@ main {
 }
 
 .postcard-copy h2 em {
-  padding-left: .5em;
   color: #9a7d4a;
   font-family: var(--script);
   font-size: .97em;

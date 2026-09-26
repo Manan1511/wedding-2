@@ -1,5 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderToStaticMarkup } from 'react-dom/server';
+// @ts-expect-error This test reads its stylesheet from disk; Node types are intentionally omitted from the browser app.
+import { readFileSync } from 'node:fs';
 import App from './App';
 
 function renderInvitation() {
@@ -54,6 +56,13 @@ describe('wedding invitation content', () => {
     expect(heroLink).toContain('THE DAY OUR FOREVER BEGINS');
     expect(heroLink).toContain('<svg class="hero-link-arrow"');
     expect(heroLink).toContain('aria-hidden="true"');
+  });
+
+  it('aligns the script word date with the rest of the postcard copy', () => {
+    const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
+    const scriptWordStyle = invitationStyles.match(/\.postcard-copy h2 em\s*\{([^}]*)\}/)?.[1] ?? '';
+
+    expect(scriptWordStyle).not.toMatch(/padding-left\s*:/);
   });
 
   it('uses no em dash in the invitation copy', () => {
