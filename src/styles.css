@@ -45,6 +45,15 @@ body.invitation-intro-active {
   overflow: hidden;
 }
 
+html.invitation-booting,
+html.invitation-booting body {
+  background: #f5f0e6;
+}
+
+html.invitation-booting main {
+  visibility: hidden;
+}
+
 body,
 button,
 input,
@@ -99,6 +108,7 @@ main {
   inset: 0;
   overflow: hidden;
   opacity: 1;
+  background: var(--champagne);
   isolation: isolate;
 }
 

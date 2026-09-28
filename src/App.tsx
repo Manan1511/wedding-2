@@ -67,9 +67,11 @@ function InvitationIntro({
 
   useEffect(() => {
     let cancelled = false;
-    const images = Array.from(introRef.current?.querySelectorAll('img') ?? []);
+    const introImages = Array.from(introRef.current?.querySelectorAll('img') ?? []);
+    const heroImage = document.querySelector<HTMLImageElement>('.hero-art img');
+    const images = heroImage ? [...introImages, heroImage] : introImages;
 
-    void waitForIntroArtwork(images).then((decoded) => {
+    void Promise.all([waitForIntroArtwork(images), document.fonts.ready]).then(([decoded]) => {
       if (!cancelled) onArtworkReady(decoded);
     });
 
@@ -91,16 +93,16 @@ function InvitationIntro({
       <div className="intro-curtain intro-curtain-left" aria-hidden="true">
         <picture className="intro-curtain-art">
           <source media="(orientation: landscape)" srcSet={wedding.artwork.curtainWide} />
-          <img src={wedding.artwork.curtain} alt="" loading="lazy" fetchPriority="high" />
+          <img src={wedding.artwork.curtain} alt="" loading="eager" fetchPriority="high" />
         </picture>
       </div>
       <div className="intro-curtain intro-curtain-right" aria-hidden="true">
         <picture className="intro-curtain-art">
           <source media="(orientation: landscape)" srcSet={wedding.artwork.curtainWide} />
-          <img src={wedding.artwork.curtain} alt="" loading="lazy" fetchPriority="high" />
+          <img src={wedding.artwork.curtain} alt="" loading="eager" fetchPriority="high" />
         </picture>
       </div>
-      <img className="intro-bouquet" src={wedding.artwork.bouquet} alt="" aria-hidden="true" loading="lazy" fetchPriority="high" />
+      <img className="intro-bouquet" src={wedding.artwork.bouquet} alt="" aria-hidden="true" loading="eager" fetchPriority="high" />
 
       <button className="intro-skip" ref={skipButtonRef} type="button" onClick={onSkip} disabled={phase === 'exiting'}>
         Skip intro <span aria-hidden="true">↗</span>
@@ -339,6 +341,7 @@ export default function App() {
   const introIsActive = introPhase !== 'done';
 
   const handleIntroArtworkReady = useCallback((decoded: boolean) => {
+    document.documentElement.classList.remove('invitation-booting');
     if (decoded) {
       setIntroArtworkReady(true);
       return;
@@ -357,6 +360,21 @@ export default function App() {
     document.body.classList.add('invitation-intro-active');
     return () => document.body.classList.remove('invitation-intro-active');
   }, [introIsActive]);
+
+  useEffect(() => {
+    if (introPhase !== 'done') return;
+    let cancelled = false;
+    const heroImage = document.querySelector<HTMLImageElement>('.hero-art img');
+    const images = heroImage ? [heroImage] : [];
+
+    void Promise.all([waitForIntroArtwork(images), document.fonts.ready]).then(() => {
+      if (!cancelled) document.documentElement.classList.remove('invitation-booting');
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [introPhase]);
 
   useEffect(() => {
     if (introPhase !== 'playing' || !introArtworkReady) return;
@@ -426,7 +444,7 @@ export default function App() {
         <section className="hero" id="home" aria-labelledby="hero-title" ref={heroRef} tabIndex={-1}>
           <picture className="hero-art" aria-hidden="true">
             <source media="(min-width: 760px)" srcSet={wedding.artwork.heroWide} />
-            <img src={wedding.artwork.hero} alt="" loading="lazy" fetchPriority="high" />
+            <img src={wedding.artwork.hero} alt="" loading="eager" fetchPriority="high" />
           </picture>
           <div className="hero-grain" aria-hidden="true" />
           <div className="hero-topline">
