@@ -49,7 +49,7 @@ export const wedding: WeddingConfig = {
     address: 'St. Xavier’s Church, Pune',
     mapUrl: 'https://maps.app.goo.gl/C6eYegm5jJE84UL57',
   },
-  rsvpWhatsAppNumber: '+91 89996 44511',
+  rsvpWhatsAppNumber: '+91 88057 75117',
   artwork: {
     hero: '/images/wedding-hero-sketch.webp',
     heroWide: '/images/wedding-hero-wide-sketch.webp',
