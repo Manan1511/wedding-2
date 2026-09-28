@@ -359,6 +359,10 @@ main {
   animation: copy-arrive 1.25s .16s both;
 }
 
+.hero-title-space {
+  height: clamp(108px, 8vw, 146px);
+}
+
 .hero-copy::before {
   position: absolute;
   z-index: -1;
@@ -385,28 +389,43 @@ main {
   font-size: clamp(10px, .7vw, 11px);
 }
 
-.hero h1 {
+.hero-names {
+  position: absolute;
+  z-index: 3;
+  top: 85%;
+  left: 50%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin: 18px 0 13px;
+  justify-content: center;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  margin: 0;
+  padding: 9px clamp(14px, 2vw, 26px) 11px;
+  border: 1px solid rgb(169 136 80 / 48%);
+  border-radius: 3px;
   color: #1a2b42;
+  background: rgb(251 248 240 / 78%);
+  box-shadow: 0 5px 18px rgb(23 40 63 / 12%);
+  backdrop-filter: blur(6px);
   font-family: var(--serif);
-  font-size: clamp(4.05rem, 10vw, 7.6rem);
+  font-size: clamp(2rem, 3.5vw, 3.5rem);
   font-weight: 400;
-  line-height: .68;
-  letter-spacing: -.055em;
+  line-height: 1;
+  letter-spacing: -.045em;
+  text-align: center;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
 }
 
-.hero h1 > span:first-child {
+.hero-names > span:first-child {
   padding-right: .23em;
 }
 
-.hero h1 > span:last-child {
+.hero-names > span:last-child {
   padding-left: .23em;
 }
 
-.hero .hero-ampersand {
+.hero-names .hero-ampersand {
   z-index: 1;
   margin: .13em 0 .18em;
   color: #a58550;
@@ -1330,20 +1349,23 @@ main {
     margin-top: clamp(132px, 16vh, 186px);
   }
 
-  .hero h1 {
+  .hero-title-space {
+    height: clamp(108px, 8vw, 146px);
+  }
+
+  .hero-names {
     flex-direction: row;
-    justify-content: center;
     gap: .14em;
-    font-size: clamp(3.5rem, 7vw, 7.2rem);
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
     line-height: 1;
   }
 
-  .hero h1 > span:first-child,
-  .hero h1 > span:last-child {
+  .hero-names > span:first-child,
+  .hero-names > span:last-child {
     padding: 0;
   }
 
-  .hero .hero-ampersand {
+  .hero-names .hero-ampersand {
     margin: 0;
     font-size: .52em;
     line-height: 1;
@@ -1416,22 +1438,27 @@ main {
     margin-top: clamp(118px, 14.5vh, 150px);
   }
 
-  .hero h1 {
-    margin-top: 16px;
+  .hero-title-space {
+    height: clamp(132px, 34vw, 170px);
+  }
+
+  .hero-names {
+    top: 68%;
     flex-direction: column;
     justify-content: center;
     gap: 0;
+    padding: 8px 18px 10px;
     font-size: clamp(2rem, 8vw, 3.2rem);
     line-height: .88;
     white-space: normal;
   }
 
-  .hero h1 > span:first-child,
-  .hero h1 > span:last-child {
+  .hero-names > span:first-child,
+  .hero-names > span:last-child {
     padding: 0;
   }
 
-  .hero .hero-ampersand {
+  .hero-names .hero-ampersand {
     margin: .08em 0 .06em;
     font-size: .5em;
     line-height: .7;
@@ -1542,7 +1569,7 @@ main {
     margin-top: 126px;
   }
 
-  .hero h1 {
+  .hero-names {
     font-size: clamp(2rem, 8.8vw, 2.55rem);
   }
 

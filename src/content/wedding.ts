@@ -51,8 +51,8 @@ export const wedding: WeddingConfig = {
   },
   rsvpWhatsAppNumber: '+91 88057 75117',
   artwork: {
-    hero: '/images/wedding-hero-sketch.webp',
-    heroWide: '/images/wedding-hero-wide-sketch.webp',
+    hero: '/images/wedding-hero-sketch-v2.webp',
+    heroWide: '/images/wedding-hero-wide-sketch-v2.webp',
     bouquet: '/images/wedding-bouquet-sketch.webp',
     closing: '/images/wedding-blessing-sketch.webp',
     curtain: '/images/wedding-curtain-watercolor.webp',
