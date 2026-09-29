@@ -82,7 +82,7 @@ describe('wedding invitation content', () => {
     expect(markup).toContain('id="ceremony"');
     expect(markup).toContain('Our Day');
     expect(markup).toContain('title="Map showing St. Xavier’s Church, Pune"');
-    expect(markup).toMatch(/<iframe\b(?=[^>]*loading="lazy")(?=[^>]*src="https:\/\/www\.openstreetmap\.org\/export\/embed\.html\?bbox=73\.8695%2C18\.5095%2C73\.883%2C18\.5165&amp;layer=mapnik&amp;marker=18\.5130815%2C73\.8762183)/);
+    expect(markup).toMatch(/<iframe\b(?=[^>]*loading="lazy")(?=[^>]*src="https:\/\/www\.google\.com\/maps\?q=18\.5130815%2C73\.8762183&amp;z=16&amp;output=embed)/);
     expect(markup).toContain('href="https://maps.app.goo.gl/C6eYegm5jJE84UL57"');
   });
 
