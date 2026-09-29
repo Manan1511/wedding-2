@@ -108,6 +108,21 @@ describe('wedding invitation content', () => {
     expect(heroNameStyles.every((styles) => !/\b(border|background|box-shadow|backdrop-filter)\s*:/.test(styles))).toBe(true);
   });
 
+  it('uses text-only contrast and moves mobile hero copy onto the brightest part of the artwork', () => {
+    const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
+    const nameStyle = invitationStyles.match(/\.hero-names\s*\{([^}]*)\}/)?.[1] ?? '';
+    const scriptureStyle = invitationStyles.match(/\.hero-scripture\s*\{([^}]*)\}/)?.[1] ?? '';
+    const linkStyle = invitationStyles.match(/\.hero-link\s*\{([^}]*)\}/)?.[1] ?? '';
+    const mobileCopyStyle = invitationStyles.match(/@media \(max-width: 760px\)\s*\{[\s\S]*?\.hero-copy\s*\{([^}]*)\}/)?.[1] ?? '';
+    const mobileTitleSpaceStyle = invitationStyles.match(/@media \(max-width: 760px\)\s*\{[\s\S]*?\.hero-title-space\s*\{([^}]*)\}/)?.[1] ?? '';
+
+    expect(nameStyle).toMatch(/text-shadow\s*:/);
+    expect(scriptureStyle).toMatch(/text-shadow\s*:/);
+    expect(linkStyle).toMatch(/text-shadow\s*:/);
+    expect(mobileCopyStyle).toMatch(/margin-top:\s*clamp\(104px, 13vh, 136px\)/);
+    expect(mobileTitleSpaceStyle).toMatch(/height:\s*clamp\(124px, 32vw, 156px\)/);
+  });
+
   it('aligns the script word date with the rest of the postcard copy', () => {
     const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
     const scriptWordStyle = invitationStyles.match(/\.postcard-copy h2 em\s*\{([^}]*)\}/)?.[1] ?? '';
