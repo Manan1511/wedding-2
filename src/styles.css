@@ -719,6 +719,7 @@ main {
   border: 1px solid rgb(225 202 158 / 82%);
   background: var(--paper);
   box-shadow: 0 22px 50px rgb(5 16 29 / 24%);
+  user-select: none;
 }
 
 .scratch-reveal-content {
