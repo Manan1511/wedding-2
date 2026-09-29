@@ -4,6 +4,7 @@ import { buildRsvpMessage, buildWhatsAppUrl, isValidRsvpResponse } from './conte
 import type { RsvpResponse } from './content/rsvp';
 import { getCountdown } from './content/time';
 import { introTimeline, shouldPlayIntro, waitForIntroArtwork } from './content/intro';
+import { setEntryMusicPlayback } from './content/music';
 import { coupleNames, wedding } from './content/wedding';
 
 const ceremonyTime = new Date(wedding.ceremony.dateTime);
@@ -93,16 +94,16 @@ function InvitationIntro({
       <div className="intro-curtain intro-curtain-left" aria-hidden="true">
         <picture className="intro-curtain-art">
           <source media="(orientation: landscape)" srcSet={wedding.artwork.curtainWide} />
-          <img src={wedding.artwork.curtain} alt="" loading="eager" fetchPriority="high" />
+          <img src={wedding.artwork.curtain} alt="" loading="lazy" fetchPriority="high" />
         </picture>
       </div>
       <div className="intro-curtain intro-curtain-right" aria-hidden="true">
         <picture className="intro-curtain-art">
           <source media="(orientation: landscape)" srcSet={wedding.artwork.curtainWide} />
-          <img src={wedding.artwork.curtain} alt="" loading="eager" fetchPriority="high" />
+          <img src={wedding.artwork.curtain} alt="" loading="lazy" fetchPriority="high" />
         </picture>
       </div>
-      <img className="intro-bouquet" src={wedding.artwork.bouquet} alt="" aria-hidden="true" loading="eager" fetchPriority="high" />
+      <img className="intro-bouquet" src={wedding.artwork.bouquet} alt="" aria-hidden="true" loading="lazy" fetchPriority="high" />
 
       <button className="intro-skip" ref={skipButtonRef} type="button" onClick={onSkip} disabled={phase === 'exiting'}>
         Skip intro <span aria-hidden="true">↗</span>
@@ -333,8 +334,10 @@ function ClosingSection() {
 
 export default function App() {
   const heroRef = useRef<HTMLElement>(null);
+  const entryMusicRef = useRef<HTMLAudioElement>(null);
   const focusHeroAfterIntro = useRef(false);
   const [introArtworkReady, setIntroArtworkReady] = useState(false);
+  const [entryMusicPlaying, setEntryMusicPlaying] = useState(false);
   const [introPhase, setIntroPhase] = useState<'playing' | 'exiting' | 'done'>(() => (
     shouldPlayIntro(window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'playing' : 'done'
   ));
@@ -386,6 +389,21 @@ export default function App() {
     if (introPhase !== 'exiting') return;
     const timer = window.setTimeout(() => setIntroPhase('done'), introTimeline.fadeDurationMs);
     return () => window.clearTimeout(timer);
+  }, [introPhase]);
+
+  useEffect(() => {
+    if (introPhase !== 'done') return;
+    const audio = entryMusicRef.current;
+    if (!audio) return;
+
+    let active = true;
+    void setEntryMusicPlayback(audio, true).then((started) => {
+      if (active) setEntryMusicPlaying(started);
+    });
+
+    return () => {
+      active = false;
+    };
   }, [introPhase]);
 
   useEffect(() => {
@@ -444,7 +462,7 @@ export default function App() {
         <section className="hero" id="home" aria-labelledby="hero-title" ref={heroRef} tabIndex={-1}>
           <picture className="hero-art" aria-hidden="true">
             <source media="(min-width: 760px)" srcSet={wedding.artwork.heroWide} />
-            <img src={wedding.artwork.hero} alt="" loading="eager" fetchPriority="high" />
+            <img src={wedding.artwork.hero} alt="" loading="lazy" fetchPriority="high" />
           </picture>
           <div className="hero-grain" aria-hidden="true" />
           <div className="hero-topline">
@@ -513,6 +531,29 @@ export default function App() {
         <RsvpSection />
         <ClosingSection />
       </main>
+      <audio
+        ref={entryMusicRef}
+        src={wedding.music.entryTrack}
+        preload="none"
+        onEnded={() => setEntryMusicPlaying(false)}
+      />
+      <button
+        className="music-toggle"
+        type="button"
+        aria-label={entryMusicPlaying ? 'Pause entry music' : 'Play entry music'}
+        aria-pressed={entryMusicPlaying}
+        aria-hidden={introIsActive || undefined}
+        disabled={introIsActive}
+        onClick={() => {
+          const audio = entryMusicRef.current;
+          if (audio) {
+            void setEntryMusicPlayback(audio, !entryMusicPlaying).then(setEntryMusicPlaying);
+          }
+        }}
+      >
+        <span className="music-toggle-icon" aria-hidden="true">{entryMusicPlaying ? 'Ⅱ' : '♫'}</span>
+        <span>{entryMusicPlaying ? 'Pause music' : 'Play music'}</span>
+      </button>
       {introIsActive && (
         <InvitationIntro
           phase={introPhase}

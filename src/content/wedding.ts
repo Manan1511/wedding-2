@@ -19,6 +19,9 @@ export interface WeddingConfig {
     mapUrl: string;
   };
   rsvpWhatsAppNumber: string;
+  music: {
+    entryTrack: string;
+  };
   artwork: {
     hero: string;
     heroWide: string;
@@ -50,6 +53,9 @@ export const wedding: WeddingConfig = {
     mapUrl: 'https://maps.app.goo.gl/C6eYegm5jJE84UL57',
   },
   rsvpWhatsAppNumber: '+91 88057 75117',
+  music: {
+    entryTrack: '/audio/entry-music.mp3',
+  },
   artwork: {
     hero: '/images/wedding-hero-sketch-v2.webp',
     heroWide: '/images/wedding-hero-wide-sketch-v2.webp',

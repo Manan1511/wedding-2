@@ -1,4 +1,6 @@
 import { describe, expect, it } from 'vitest';
+// @ts-expect-error This test reads its optimized static audio asset; Node types are intentionally omitted from the browser app.
+import { readFileSync } from 'node:fs';
 import invitationHtml from '../../index.html?raw';
 import { buildRsvpMessage, buildWhatsAppUrl, isValidRsvpResponse } from './rsvp';
 import { getCountdown } from './time';
@@ -7,6 +9,12 @@ import { wedding } from './wedding';
 describe('wedding intro artwork', () => {
   it('uses compressed WebP files for every image served by the invitation', () => {
     expect(Object.values(wedding.artwork).every((imagePath) => imagePath.endsWith('.webp'))).toBe(true);
+  });
+
+  it('keeps the entry music under 350 KB so playback adds little transfer cost', () => {
+    const audio = readFileSync(new URL('../../public/audio/entry-music.mp3', import.meta.url));
+
+    expect(audio.byteLength).toBeLessThan(350_000);
   });
 
   it('preloads the responsive opening and hero assets, but not the closing image', () => {

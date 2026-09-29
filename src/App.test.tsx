@@ -49,6 +49,15 @@ describe('wedding invitation content', () => {
     expect(renderInvitation()).toMatch(/<div class="invitation-intro[^\"]*"[^>]*data-artwork-ready="false"/);
   });
 
+  it('offers entry music without fetching the track before a guest plays it', () => {
+    const markup = renderInvitation();
+
+    expect(markup).toMatch(/<audio\b(?=[^>]*src="\/audio\/entry-music\.mp3")(?=[^>]*preload="none")[^>]*>/);
+    expect(markup).toContain('class="music-toggle"');
+    expect(markup).toContain('aria-label="Play entry music"');
+    expect(markup).toContain('aria-pressed="false"');
+  });
+
   it('uses a text label and decorative arrow for the scroll cue', () => {
     const markup = renderInvitation();
     const heroLink = markup.match(/<a class="hero-link"[^>]*>(.*?)<\/a>/)?.[1] ?? '';
