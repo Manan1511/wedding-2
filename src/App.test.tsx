@@ -97,6 +97,17 @@ describe('wedding invitation content', () => {
     expect(heroLink).toContain('aria-hidden="true"');
   });
 
+  it('keeps the hero names unboxed and vertically centered in the space between the family line and Scripture', () => {
+    const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
+    const heroNameStyles = [...invitationStyles.matchAll(/\.hero-names\s*\{([^}]*)\}/g)].map(([, styles]) => styles);
+    const titleSpaceStyle = invitationStyles.match(/\.hero-title-space\s*\{([^}]*)\}/)?.[1] ?? '';
+
+    expect(titleSpaceStyle).toMatch(/display:\s*grid/);
+    expect(titleSpaceStyle).toMatch(/place-items:\s*center/);
+    expect(heroNameStyles.every((styles) => !/position:\s*absolute/.test(styles))).toBe(true);
+    expect(heroNameStyles.every((styles) => !/\b(border|background|box-shadow|backdrop-filter)\s*:/.test(styles))).toBe(true);
+  });
+
   it('aligns the script word date with the rest of the postcard copy', () => {
     const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
     const scriptWordStyle = invitationStyles.match(/\.postcard-copy h2 em\s*\{([^}]*)\}/)?.[1] ?? '';

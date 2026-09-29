@@ -360,6 +360,8 @@ main {
 }
 
 .hero-title-space {
+  display: grid;
+  place-items: center;
   height: clamp(108px, 8vw, 146px);
 }
 
@@ -390,30 +392,20 @@ main {
 }
 
 .hero-names {
-  position: absolute;
   z-index: 3;
-  top: 34%;
-  left: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   width: max-content;
   max-width: calc(100% - 32px);
   margin: 0;
-  padding: 9px clamp(14px, 2vw, 26px) 11px;
-  border: 1px solid rgb(169 136 80 / 48%);
-  border-radius: 3px;
   color: #1a2b42;
-  background: rgb(251 248 240 / 78%);
-  box-shadow: 0 5px 18px rgb(23 40 63 / 12%);
-  backdrop-filter: blur(6px);
   font-family: var(--serif);
   font-size: clamp(2rem, 3.5vw, 3.5rem);
   font-weight: 400;
   line-height: 1;
   letter-spacing: -.045em;
   text-align: center;
-  transform: translate(-50%, -50%);
   white-space: nowrap;
 }
 
@@ -1665,11 +1657,9 @@ main {
   }
 
   .hero-names {
-    top: 34%;
     flex-direction: column;
     justify-content: center;
     gap: 0;
-    padding: 8px 18px 10px;
     font-size: clamp(2rem, 8vw, 3.2rem);
     line-height: .88;
     white-space: normal;

@@ -500,7 +500,13 @@ export default function App() {
 
           <div className="hero-copy">
             <p className="eyebrow hero-eyebrow">TOGETHER WITH THEIR FAMILIES</p>
-            <div className="hero-title-space" aria-hidden="true" />
+            <div className="hero-title-space">
+              <h1 className="hero-names" id="hero-title">
+                <span>{wedding.couple.firstName}</span>
+                <span className="hero-ampersand">&amp;</span>
+                <span>{wedding.couple.secondName}</span>
+              </h1>
+            </div>
             <div className="hero-scripture">
               <span className="hero-scripture-text">“{wedding.scripture.text}”</span>
               <span className="hero-scripture-ref">({wedding.scripture.reference})</span>
@@ -512,12 +518,6 @@ export default function App() {
               </svg>
             </a>
           </div>
-
-          <h1 className="hero-names" id="hero-title">
-            <span>{wedding.couple.firstName}</span>
-            <span className="hero-ampersand">&amp;</span>
-            <span>{wedding.couple.secondName}</span>
-          </h1>
 
           <div className="hero-bottomline">
             <span className="hero-corner-label hero-corner-label--navy">BY GOD’S GRACE</span>
