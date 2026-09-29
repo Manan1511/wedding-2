@@ -418,6 +418,18 @@ export default function App() {
     if (!audio) return;
 
     void setEntryMusicPlayback(audio, true);
+
+    const retryAfterGesture = () => {
+      if (audio.paused) void setEntryMusicPlayback(audio, true);
+    };
+
+    window.addEventListener('pointerdown', retryAfterGesture, { once: true });
+    window.addEventListener('keydown', retryAfterGesture, { once: true });
+
+    return () => {
+      window.removeEventListener('pointerdown', retryAfterGesture);
+      window.removeEventListener('keydown', retryAfterGesture);
+    };
   }, [introPhase]);
 
   useEffect(() => {
