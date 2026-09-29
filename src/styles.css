@@ -621,17 +621,17 @@ main {
   list-style: none;
 }
 
-.countdown-section {
+.scratch-section {
   position: relative;
   overflow: hidden;
-  padding: 82px 22px 88px;
+  padding: clamp(76px, 9vw, 112px) 24px 92px;
   color: #f9f5eb;
   background: var(--navy);
   text-align: center;
 }
 
-.countdown-section::before,
-.countdown-section::after {
+.scratch-section::before,
+.scratch-section::after {
   position: absolute;
   width: 320px;
   height: 320px;
@@ -641,17 +641,17 @@ main {
   pointer-events: none;
 }
 
-.countdown-section::before {
+.scratch-section::before {
   top: -244px;
   left: -142px;
 }
 
-.countdown-section::after {
+.scratch-section::after {
   right: -168px;
   bottom: -265px;
 }
 
-.countdown-rule,
+.scratch-rule,
 .ceremony-footer-line {
   display: flex;
   align-items: center;
@@ -661,96 +661,175 @@ main {
   color: var(--gold-light);
 }
 
-.countdown-rule > span,
+.scratch-rule > span,
 .ceremony-footer-line > span {
   width: min(19vw, 138px);
   height: 1px;
   background: rgb(212 189 143 / 45%);
 }
 
-.countdown-rule svg,
+.scratch-rule i,
 .ceremony-footer-line svg {
   width: 15px;
   height: 20px;
+}
+
+.scratch-rule i {
+  color: var(--gold-light);
+  font-size: 17px;
+  font-style: normal;
+  line-height: 20px;
 }
 
 .eyebrow-light {
   color: #d4bd8f;
 }
 
-.countdown-inner h2 {
-  margin: 10px 0 27px;
+.scratch-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 760px);
+  margin: 0 auto;
+}
+
+.scratch-inner h2 {
+  margin: 12px 0 0;
   color: #fbf8f0;
   font-family: var(--serif);
   font-size: clamp(2.35rem, 5.8vw, 4rem);
   font-weight: 400;
-  line-height: 1;
+  line-height: 1.04;
 }
 
-.countdown-grid {
-  display: grid;
-  width: min(100%, 650px);
-  grid-template-columns: repeat(4, 1fr);
-  margin: 0 auto;
+.scratch-intro {
+  max-width: 420px;
+  margin: 17px auto 0;
+  color: #ded5c2;
+  font-size: 15px;
+  line-height: 1.7;
 }
 
-.countdown-unit {
+.scratch-card {
   position: relative;
+  width: min(100%, 680px);
+  min-height: 260px;
+  aspect-ratio: 1.85;
+  margin: 38px auto 0;
+  overflow: hidden;
+  border: 1px solid rgb(225 202 158 / 82%);
+  background: var(--paper);
+  box-shadow: 0 22px 50px rgb(5 16 29 / 24%);
+}
+
+.scratch-reveal-content {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
-  padding: 11px 7px 5px;
+  justify-content: center;
+  padding: 32px;
+  color: var(--navy);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgb(255 255 255 / 70%), transparent 64%),
+    var(--paper);
 }
 
-.countdown-unit + .countdown-unit::before {
-  position: absolute;
-  top: 19px;
-  bottom: 7px;
-  left: 0;
-  width: 1px;
-  content: '';
-  background: rgb(212 189 143 / 24%);
+.scratch-content-label {
+  margin: 0 0 16px;
+  color: var(--ink-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .2em;
 }
 
-.countdown-value {
-  color: #f4e9d2;
+.scratch-date {
+  margin: 0;
+  color: var(--navy);
   font-family: var(--serif);
-  font-size: clamp(2.65rem, 7.2vw, 5rem);
-  font-weight: 400;
-  line-height: .93;
-  font-variant-numeric: tabular-nums;
-}
-
-.countdown-label {
-  color: #c7c6bb;
-  font-size: 9px;
+  font-size: clamp(2rem, 5vw, 3.25rem);
   font-weight: 500;
-  letter-spacing: .18em;
-  text-transform: uppercase;
+  line-height: 1.1;
 }
 
-.countdown-date {
-  margin: 25px 0 0;
-  color: #e0d8c7;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: .15em;
-  text-transform: uppercase;
+.scratch-time {
+  margin: 11px 0 0;
+  color: #987846;
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2rem);
 }
 
-.countdown-date span {
-  padding: 0 7px;
-  color: var(--gold-light);
-}
-
-.countdown-branch {
+.scratch-canvas {
   position: absolute;
-  right: 4%;
-  bottom: 16px;
-  width: 105px;
-  color: rgb(212 189 143 / 28%);
-  transform: rotate(-8deg);
+  z-index: 2;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: none;
+  transition: opacity 520ms ease, transform 620ms cubic-bezier(.2, .7, .2, 1);
+}
+
+.scratch-canvas:active {
+  cursor: grabbing;
+}
+
+.scratch-card.is-revealed .scratch-canvas {
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(1.025);
+}
+
+.scratch-hint {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: #293b4e;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.scratch-hint span {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .2em;
+}
+
+.scratch-hint small {
+  font-size: 14px;
+  letter-spacing: .02em;
+}
+
+.scratch-reveal-button {
+  min-height: 46px;
+  margin-top: 21px;
+  padding: 0 20px;
+  border: 1px solid rgb(212 189 143 / 70%);
+  color: #f9f5eb;
+  background: transparent;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.scratch-reveal-button:hover:not(:disabled) {
+  color: var(--navy);
+  background: #ead9b6;
+  transform: translateY(-1px);
+}
+
+.scratch-reveal-button:disabled {
+  cursor: default;
+  opacity: .72;
 }
 
 .save-section {
@@ -924,11 +1003,19 @@ main {
 
 .ceremony-layout {
   display: grid;
-  width: min(100%, 1000px);
-  grid-template-columns: 1fr .82fr;
+  width: min(100%, 1160px);
+  grid-template-columns: minmax(250px, .72fr) minmax(0, 1.28fr);
   align-items: center;
   gap: clamp(44px, 8vw, 110px);
   margin: 0 auto;
+}
+
+.ceremony-event {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: minmax(210px, .82fr) minmax(0, 1.18fr);
+  align-items: stretch;
+  gap: 18px;
 }
 
 .ceremony-cross {
@@ -953,7 +1040,7 @@ main {
 
 .ceremony-details {
   position: relative;
-  padding: clamp(30px, 5vw, 53px) clamp(25px, 5vw, 50px) 43px;
+  padding: clamp(28px, 3vw, 42px) clamp(21px, 3vw, 34px) 35px;
   border: 1px solid #bdaa86;
   background: rgb(251 248 240 / 64%);
 }
@@ -992,8 +1079,17 @@ main {
   font-size: 16px;
 }
 
+.ceremony-details-title {
+  margin: 19px 0 0;
+  color: var(--navy);
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 2.7vw, 2.35rem);
+  font-weight: 400;
+  line-height: 1.05;
+}
+
 .detail-date {
-  margin: 23px 0 18px;
+  margin: 17px 0 16px;
   color: var(--navy);
   font-family: var(--serif);
   font-size: clamp(1.5rem, 3vw, 2rem);
@@ -1008,7 +1104,7 @@ main {
 }
 
 .detail-time {
-  margin: 20px 0 9px;
+  margin: 17px 0 8px;
   color: #947544;
   font-family: var(--serif);
   font-size: 2rem;
@@ -1052,6 +1148,25 @@ main {
 .text-link span {
   color: var(--gold);
   font-size: 14px;
+}
+
+.ceremony-map {
+  position: relative;
+  min-width: 0;
+  min-height: 340px;
+  overflow: hidden;
+  border: 1px solid #bdaa86;
+  background: #ddd4c3;
+  box-shadow: 0 16px 38px rgb(48 43 32 / 9%);
+}
+
+.ceremony-map iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .ceremony-footer-line {
@@ -1424,8 +1539,8 @@ main {
   .postcard-arch > p,
   .postcard-date,
   .postcard-number,
-  .countdown-label,
-  .countdown-date,
+  .scratch-content-label,
+  .scratch-reveal-button,
   .text-link,
   .closing-date,
   .footer-bottom,
@@ -1456,6 +1571,13 @@ main {
   .rsvp-result,
   .message-preview pre {
     font-size: 14px;
+  }
+}
+
+@media (max-width: 960px) {
+  .ceremony-layout {
+    grid-template-columns: 1fr;
+    gap: 38px;
   }
 }
 
@@ -1550,10 +1672,14 @@ main {
     bottom: 17px;
   }
 
-  .ceremony-layout,
   .rsvp-layout {
     grid-template-columns: 1fr;
     gap: 39px;
+  }
+
+  .ceremony-event {
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
 
   .ceremony-intro h2,
@@ -1562,7 +1688,11 @@ main {
   }
 
   .ceremony-details {
-    max-width: 520px;
+    width: 100%;
+  }
+
+  .ceremony-map {
+    min-height: 300px;
   }
 
   .rsvp-layout {
@@ -1618,22 +1748,27 @@ main {
     right: 20px;
   }
 
-  .countdown-section {
+  .scratch-section {
     padding-right: 15px;
     padding-left: 15px;
   }
 
-  .countdown-grid {
-    width: 100%;
+  .scratch-card {
+    min-height: 250px;
+    margin-top: 28px;
   }
 
-  .countdown-value {
-    font-size: clamp(2.35rem, 11vw, 3rem);
+  .scratch-date {
+    font-size: clamp(1.8rem, 8.5vw, 2.5rem);
   }
 
-  .countdown-label {
-    font-size: 9px;
-    letter-spacing: .1em;
+  .scratch-hint span {
+    font-size: 11px;
+    letter-spacing: .16em;
+  }
+
+  .scratch-hint small {
+    font-size: 13px;
   }
 
   .footer-bottom {

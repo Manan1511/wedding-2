@@ -3,7 +3,6 @@ import { describe, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import invitationHtml from '../../index.html?raw';
 import { buildRsvpMessage, buildWhatsAppUrl, isValidRsvpResponse } from './rsvp';
-import { getCountdown } from './time';
 import { wedding } from './wedding';
 
 describe('wedding intro artwork', () => {
@@ -15,6 +14,12 @@ describe('wedding intro artwork', () => {
     const audio = readFileSync(new URL('../../public/audio/entry-music.mp3', import.meta.url));
 
     expect(audio.byteLength).toBeLessThan(350_000);
+  });
+
+  it('keeps the scratch-card foil texture lightweight for a scroll-loaded section', () => {
+    const texture = readFileSync(new URL('../../public/images/scratch-champagne.webp', import.meta.url));
+
+    expect(texture.byteLength).toBeLessThan(180_000);
   });
 
   it('preloads the responsive opening and hero assets, but not the closing image', () => {
@@ -33,26 +38,6 @@ describe('wedding intro artwork', () => {
       expect(preloadTags.some((tag) => tag.includes(`href="${imagePath}"`))).toBe(true);
     }
     expect(preloadTags.some((tag) => tag.includes(`href="${wedding.artwork.closing}"`))).toBe(false);
-  });
-});
-
-describe('getCountdown', () => {
-  it('breaks the remaining event time into days, hours, minutes, and seconds', () => {
-    const countdown = getCountdown(
-      '2026-12-26T16:00:00+05:30',
-      new Date('2026-12-25T15:00:00.000Z'),
-    );
-
-    expect(countdown).toEqual({ days: 0, hours: 19, minutes: 30, seconds: 0, complete: false });
-  });
-
-  it('stops at zero once the ceremony has begun', () => {
-    const countdown = getCountdown(
-      '2026-12-26T16:00:00+05:30',
-      new Date('2026-12-26T10:30:01.000Z'),
-    );
-
-    expect(countdown).toEqual({ days: 0, hours: 0, minutes: 0, seconds: 0, complete: true });
   });
 });
 

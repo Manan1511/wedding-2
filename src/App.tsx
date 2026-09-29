@@ -2,10 +2,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties, FormEvent, ReactNode } from 'react';
 import { buildRsvpMessage, buildWhatsAppUrl, isValidRsvpResponse } from './content/rsvp';
 import type { RsvpResponse } from './content/rsvp';
-import { getCountdown } from './content/time';
 import { introTimeline, shouldPlayIntro, waitForIntroArtwork } from './content/intro';
 import { setEntryMusicPlayback } from './content/music';
 import { coupleNames, wedding } from './content/wedding';
+import { ScratchReveal } from './ScratchReveal';
 
 const ceremonyTime = new Date(wedding.ceremony.dateTime);
 const weddingDate = new Intl.DateTimeFormat('en-GB', {
@@ -120,43 +120,6 @@ function Reveal({ children, className = '', delay = 0 }: { children: ReactNode; 
   );
 }
 
-function CountdownSection() {
-  const [countdown, setCountdown] = useState(() => getCountdown(wedding.ceremony.dateTime));
-
-  useEffect(() => {
-    const updateCountdown = () => setCountdown(getCountdown(wedding.ceremony.dateTime));
-    const interval = window.setInterval(updateCountdown, 1_000);
-    return () => window.clearInterval(interval);
-  }, []);
-
-  const units = [
-    ['days', countdown.days, 'Days'],
-    ['hours', countdown.hours, 'Hours'],
-    ['minutes', countdown.minutes, 'Minutes'],
-    ['seconds', countdown.seconds, 'Seconds'],
-  ] as const;
-
-  return (
-    <section className="countdown-section" aria-label="Countdown to the wedding">
-      <div className="countdown-rule" aria-hidden="true"><span /><CrossMark /><span /></div>
-      <Reveal className="countdown-inner">
-        <p className="eyebrow eyebrow-light">A DAY HELD IN GRACE</p>
-        <h2>{countdown.complete ? 'Today, we say “I do.”' : 'Until we say, “I do.”'}</h2>
-        <div className="countdown-grid" aria-live="off">
-          {units.map(([unit, value, label]) => (
-            <div className="countdown-unit" key={unit} aria-label={`${value} ${label.toLowerCase()}`}>
-              <span className="countdown-value">{String(value).padStart(2, '0')}</span>
-              <span className="countdown-label">{label}</span>
-            </div>
-          ))}
-        </div>
-        <p className="countdown-date">{weddingDate} <span>·</span> {weddingTime}</p>
-      </Reveal>
-      <BranchMark className="countdown-branch" />
-    </section>
-  );
-}
-
 function SaveTheDate() {
   return (
     <section className="save-section" id="save-the-date" aria-labelledby="save-title">
@@ -192,16 +155,28 @@ function CeremonySection() {
           <h2 id="ceremony-title">A promise,<br /><em>before God.</em></h2>
           <p className="ceremony-body">With grateful hearts, we invite you to join us as we begin our life together in the house of the Lord.</p>
         </Reveal>
-        <Reveal className="ceremony-details" delay={130}>
-          <div className="detail-topline"><span className="eyebrow">THE WEDDING MASS</span><span className="detail-star" aria-hidden="true">✳</span></div>
-          <p className="detail-date">{weddingDate}</p>
-          <div className="detail-divider" aria-hidden="true" />
-          <p className="detail-time">{weddingTime}</p>
-          <p className="detail-place">{wedding.ceremony.venue}<br /><span>{wedding.ceremony.city}</span></p>
-          <a className="text-link" href={wedding.ceremony.mapUrl} target="_blank" rel="noreferrer">
-            Find the church <span aria-hidden="true">↗</span>
-          </a>
-        </Reveal>
+        <div className="ceremony-event">
+          <Reveal className="ceremony-details" delay={130}>
+            <div className="detail-topline"><span className="eyebrow">THE WEDDING MASS</span><span className="detail-star" aria-hidden="true">✳</span></div>
+            <h3 className="ceremony-details-title">Our Day</h3>
+            <p className="detail-date">{weddingDate}</p>
+            <div className="detail-divider" aria-hidden="true" />
+            <p className="detail-time">{weddingTime}</p>
+            <p className="detail-place">{wedding.ceremony.venue}<br /><span>{wedding.ceremony.city}</span></p>
+            <a className="text-link" href={wedding.ceremony.mapUrl} target="_blank" rel="noreferrer">
+              Find the church <span aria-hidden="true">↗</span>
+            </a>
+          </Reveal>
+          <Reveal className="ceremony-map" delay={220}>
+            <iframe
+              src={wedding.ceremony.mapEmbedUrl}
+              title="Map showing St. Xavier’s Church, Pune"
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          </Reveal>
+        </div>
       </div>
       <div className="ceremony-footer-line" aria-hidden="true"><span /><CrossMark /><span /></div>
     </section>
@@ -525,7 +500,12 @@ export default function App() {
           </Reveal>
         </section>
 
-        <CountdownSection />
+        <ScratchReveal
+          date={weddingDate}
+          dateTime={wedding.ceremony.dateTime}
+          textureSrc={wedding.artwork.scratchSurface}
+          time={weddingTime}
+        />
         <SaveTheDate />
         <CeremonySection />
         <RsvpSection />
