@@ -717,9 +717,8 @@ main {
   color: var(--navy);
   font-family: var(--serif);
   font-size: clamp(2rem, 5vw, 3.25rem);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.1;
-  text-shadow: 0 1px 6px rgb(255 252 245 / 78%);
 }
 
 .scratch-time {
