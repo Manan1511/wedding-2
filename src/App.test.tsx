@@ -62,6 +62,8 @@ describe('wedding invitation content', () => {
     const markup = renderInvitation();
     const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
     const scratchCardStyle = invitationStyles.match(/\.scratch-card\s*\{([^}]*)\}/)?.[1] ?? '';
+    const scratchContentStyle = invitationStyles.match(/\.scratch-reveal-content\s*\{([^}]*)\}/)?.[1] ?? '';
+    const revealButton = markup.match(/<button class="scratch-reveal-button"[^>]*>/)?.[0] ?? '';
 
     expect(markup).toContain('class="scratch-section"');
     expect(markup).toContain('Scratch to reveal the wedding date and time');
@@ -69,6 +71,9 @@ describe('wedding invitation content', () => {
     expect(markup).not.toContain('Until we say,');
     expect(markup).not.toContain('class="countdown-grid"');
     expect(scratchCardStyle).toMatch(/user-select:\s*none/);
+    expect(scratchContentStyle).toMatch(/visibility:\s*hidden/);
+    expect(revealButton).toContain('aria-expanded="false"');
+    expect(revealButton).not.toContain('aria-pressed=');
   });
 
   it('presents the ceremony schedule beside an embedded church map', () => {

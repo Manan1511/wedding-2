@@ -734,6 +734,12 @@ main {
   background:
     radial-gradient(ellipse at 50% 0%, rgb(255 255 255 / 70%), transparent 64%),
     var(--paper);
+  visibility: hidden;
+}
+
+.scratch-card.is-coated .scratch-reveal-content,
+.scratch-card.is-revealed .scratch-reveal-content {
+  visibility: visible;
 }
 
 .scratch-content-label {
@@ -770,6 +776,11 @@ main {
   cursor: grab;
   touch-action: none;
   transition: opacity 520ms ease, transform 620ms cubic-bezier(.2, .7, .2, 1);
+  visibility: hidden;
+}
+
+.scratch-card.is-coated .scratch-canvas {
+  visibility: visible;
 }
 
 .scratch-canvas:active {
@@ -794,6 +805,11 @@ main {
   color: #293b4e;
   pointer-events: none;
   transition: opacity 180ms ease;
+  visibility: hidden;
+}
+
+.scratch-card.is-coated .scratch-hint {
+  visibility: visible;
 }
 
 .scratch-hint span {

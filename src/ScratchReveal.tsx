@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { PointerEvent as ReactPointerEvent } from 'react';
+import { resizeScratchCanvas } from './content/scratchCanvas';
 
 interface ScratchRevealProps {
   date: string;
@@ -23,6 +24,7 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
   const hasScratched = useRef(false);
   const textureRef = useRef<HTMLImageElement | null>(null);
   const [nearViewport, setNearViewport] = useState(false);
+  const [coatingReady, setCoatingReady] = useState(false);
   const [interactionStarted, setInteractionStarted] = useState(false);
   const [revealed, setRevealed] = useState(false);
 
@@ -74,15 +76,23 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
     };
 
     const paintCoating = () => {
-      if (hasScratched.current) return;
-
       const bounds = canvas.getBoundingClientRect();
       if (!bounds.width || !bounds.height) return;
 
       const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.round(bounds.width * pixelRatio);
-      canvas.height = Math.round(bounds.height * pixelRatio);
-      context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      const resized = resizeScratchCanvas(
+        canvas,
+        context,
+        bounds,
+        pixelRatio,
+        hasScratched.current,
+      );
+
+      if (hasScratched.current) {
+        if (resized) previousPoint.current = null;
+        return;
+      }
+
       context.clearRect(0, 0, bounds.width, bounds.height);
 
       const texture = textureRef.current;
@@ -95,6 +105,7 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
       context.strokeStyle = 'rgb(255 250 240 / 0.78)';
       context.lineWidth = 1;
       context.strokeRect(12, 12, bounds.width - 24, bounds.height - 24);
+      setCoatingReady(true);
     };
 
     paintCoating();
@@ -167,7 +178,7 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
   }
 
   function handlePointerDown(event: ReactPointerEvent<HTMLCanvasElement>) {
-    if (revealed || event.button > 0) return;
+    if (!coatingReady || activePointerId.current !== null || revealed || event.button > 0) return;
     event.preventDefault();
     event.currentTarget.setPointerCapture(event.pointerId);
     isDrawing.current = true;
@@ -209,7 +220,7 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
         <h2 id="scratch-title">A date to hold<br />close to your heart.</h2>
         <p className="scratch-intro">Scratch to reveal the wedding date and time.</p>
 
-        <div className={`scratch-card${revealed ? ' is-revealed' : ''}`}>
+        <div className={`scratch-card${coatingReady ? ' is-coated' : ''}${revealed ? ' is-revealed' : ''}`}>
           <div
             className="scratch-reveal-content"
             id="scratch-reveal-content"
@@ -242,7 +253,7 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
           className="scratch-reveal-button"
           type="button"
           aria-controls="scratch-reveal-content"
-          aria-pressed={revealed}
+          aria-expanded={revealed}
           disabled={revealed}
           onClick={revealDateAndTime}
         >
