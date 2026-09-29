@@ -4,6 +4,7 @@ import { buildRsvpMessage, buildWhatsAppUrl, isValidRsvpResponse } from './conte
 import type { RsvpResponse } from './content/rsvp';
 import { introTimeline, shouldPlayIntro, waitForIntroArtwork } from './content/intro';
 import { setEntryMusicPlayback } from './content/music';
+import { buildChurchMapTileUrls } from './content/churchMap';
 import { coupleNames, wedding } from './content/wedding';
 import { ScratchReveal } from './ScratchReveal';
 
@@ -145,6 +146,58 @@ function SaveTheDate() {
   );
 }
 
+function ChurchMap() {
+  const mapRef = useRef<HTMLElement>(null);
+  const [tilesVisible, setTilesVisible] = useState(false);
+  const tileUrls = buildChurchMapTileUrls({
+    x: wedding.ceremony.map.tileX,
+    y: wedding.ceremony.map.tileY,
+    zoom: wedding.ceremony.map.zoom,
+  });
+
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map) return;
+
+    if (!('IntersectionObserver' in window)) {
+      setTilesVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setTilesVisible(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '220px 0px' });
+
+    observer.observe(map);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <figure className={`ceremony-map church-map${tilesVisible ? ' is-ready' : ''}`} ref={mapRef}>
+      <figcaption className="sr-only">Map location for St. Xavier’s Church, Pune</figcaption>
+      {tilesVisible && (
+        <div className="church-map-tiles" aria-hidden="true">
+          {tileUrls.map((tileUrl) => <img key={tileUrl} src={tileUrl} alt="" loading="lazy" draggable={false} />)}
+        </div>
+      )}
+      <span
+        className="church-map-pin"
+        aria-hidden="true"
+        style={{ left: wedding.ceremony.map.markerX, top: wedding.ceremony.map.markerY }}
+      >
+        <span>✝</span>
+      </span>
+      <span className="church-map-place">St. Xavier’s Church</span>
+      <a className="church-map-attribution" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">
+        © OpenStreetMap contributors
+      </a>
+    </figure>
+  );
+}
+
 function CeremonySection() {
   return (
     <section className="ceremony-section" id="ceremony" aria-labelledby="ceremony-title">
@@ -167,14 +220,8 @@ function CeremonySection() {
               Find the church <span aria-hidden="true">↗</span>
             </a>
           </Reveal>
-          <Reveal className="ceremony-map" delay={220}>
-            <iframe
-              src={wedding.ceremony.mapEmbedUrl}
-              title="Map showing St. Xavier’s Church, Pune"
-              loading="lazy"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
+          <Reveal delay={220}>
+            <ChurchMap />
           </Reveal>
         </div>
       </div>
@@ -312,7 +359,6 @@ export default function App() {
   const entryMusicRef = useRef<HTMLAudioElement>(null);
   const focusHeroAfterIntro = useRef(false);
   const [introArtworkReady, setIntroArtworkReady] = useState(false);
-  const [entryMusicPlaying, setEntryMusicPlaying] = useState(false);
   const [introPhase, setIntroPhase] = useState<'playing' | 'exiting' | 'done'>(() => (
     shouldPlayIntro(window.matchMedia('(prefers-reduced-motion: reduce)').matches) ? 'playing' : 'done'
   ));
@@ -371,14 +417,7 @@ export default function App() {
     const audio = entryMusicRef.current;
     if (!audio) return;
 
-    let active = true;
-    void setEntryMusicPlayback(audio, true).then((started) => {
-      if (active) setEntryMusicPlaying(started);
-    });
-
-    return () => {
-      active = false;
-    };
+    void setEntryMusicPlayback(audio, true);
   }, [introPhase]);
 
   useEffect(() => {
@@ -514,26 +553,8 @@ export default function App() {
       <audio
         ref={entryMusicRef}
         src={wedding.music.entryTrack}
-        preload="none"
-        onEnded={() => setEntryMusicPlaying(false)}
+        preload="metadata"
       />
-      <button
-        className="music-toggle"
-        type="button"
-        aria-label={entryMusicPlaying ? 'Pause entry music' : 'Play entry music'}
-        aria-pressed={entryMusicPlaying}
-        aria-hidden={introIsActive || undefined}
-        disabled={introIsActive}
-        onClick={() => {
-          const audio = entryMusicRef.current;
-          if (audio) {
-            void setEntryMusicPlayback(audio, !entryMusicPlaying).then(setEntryMusicPlaying);
-          }
-        }}
-      >
-        <span className="music-toggle-icon" aria-hidden="true">{entryMusicPlaying ? 'Ⅱ' : '♫'}</span>
-        <span>{entryMusicPlaying ? 'Pause music' : 'Play music'}</span>
-      </button>
       {introIsActive && (
         <InvitationIntro
           phase={introPhase}

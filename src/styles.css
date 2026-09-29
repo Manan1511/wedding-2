@@ -208,41 +208,6 @@ main {
   cursor: default;
 }
 
-.music-toggle {
-  position: fixed;
-  z-index: 15;
-  right: clamp(24px, 5vw, 76px);
-  bottom: max(72px, calc(env(safe-area-inset-bottom) + 72px));
-  display: inline-flex;
-  min-height: 44px;
-  align-items: center;
-  justify-content: center;
-  gap: 9px;
-  padding: 0 16px;
-  border: 1px solid rgb(212 189 143 / 75%);
-  border-radius: 999px;
-  color: var(--paper);
-  background: var(--navy);
-  box-shadow: 0 8px 24px rgb(23 40 63 / 18%);
-  cursor: pointer;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  transition: background 180ms ease, transform 180ms ease;
-}
-
-.music-toggle:hover {
-  background: var(--navy-soft);
-  transform: translateY(-2px);
-}
-
-.music-toggle-icon {
-  color: var(--gold-light);
-  font-size: 17px;
-  line-height: 1;
-}
-
 .invitation-intro.is-exiting {
   pointer-events: none;
   opacity: 0;
@@ -427,7 +392,7 @@ main {
 .hero-names {
   position: absolute;
   z-index: 3;
-  top: 85%;
+  top: 34%;
   left: 50%;
   display: flex;
   align-items: center;
@@ -1177,13 +1142,96 @@ main {
   box-shadow: 0 16px 38px rgb(48 43 32 / 9%);
 }
 
-.ceremony-map iframe {
+.church-map {
+  isolation: isolate;
+  display: block;
+  margin: 0;
+  background:
+    linear-gradient(145deg, rgb(231 225 212 / 92%), rgb(205 213 202 / 92%)),
+    #d9d7ca;
+}
+
+.church-map-tiles {
   position: absolute;
   inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 360ms ease;
+}
+
+.church-map.is-ready .church-map-tiles {
+  opacity: 1;
+}
+
+.church-map-tiles img {
   display: block;
   width: 100%;
   height: 100%;
-  border: 0;
+  min-width: 0;
+  object-fit: cover;
+  user-select: none;
+}
+
+.church-map::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  content: '';
+  background: linear-gradient(180deg, rgb(249 246 238 / 3%), rgb(26 43 66 / 8%));
+  pointer-events: none;
+}
+
+.church-map-pin {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border: 2px solid #fffaf0;
+  border-radius: 50% 50% 50% 0;
+  color: #fffaf0;
+  background: var(--navy);
+  box-shadow: 0 6px 16px rgb(18 35 56 / 35%);
+  font-size: 18px;
+  transform: translate(-50%, -100%) rotate(-45deg);
+}
+
+.church-map-pin > span {
+  transform: rotate(45deg);
+}
+
+.church-map-place {
+  position: absolute;
+  z-index: 3;
+  bottom: 16px;
+  left: 16px;
+  padding: 7px 10px;
+  border: 1px solid rgb(255 250 240 / 65%);
+  color: var(--navy);
+  background: rgb(255 250 240 / 90%);
+  box-shadow: 0 4px 13px rgb(36 46 46 / 16%);
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.church-map-attribution {
+  position: absolute;
+  z-index: 3;
+  right: 8px;
+  bottom: 8px;
+  padding: 3px 5px;
+  color: #263446;
+  background: rgb(255 255 255 / 84%);
+  font-family: var(--sans);
+  font-size: 9px;
+  text-decoration: none;
 }
 
 .ceremony-footer-line {
@@ -1617,7 +1665,7 @@ main {
   }
 
   .hero-names {
-    top: 68%;
+    top: 34%;
     flex-direction: column;
     justify-content: center;
     gap: 0;

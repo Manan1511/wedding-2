@@ -17,7 +17,13 @@ export interface WeddingConfig {
     city: string;
     address: string;
     mapUrl: string;
-    mapEmbedUrl: string;
+    map: {
+      zoom: number;
+      tileX: number;
+      tileY: number;
+      markerX: string;
+      markerY: string;
+    };
   };
   rsvpWhatsAppNumber: string;
   music: {
@@ -53,7 +59,13 @@ export const wedding: WeddingConfig = {
     city: 'Pune, India',
     address: 'St. Xavier’s Church, Pune',
     mapUrl: 'https://maps.app.goo.gl/C6eYegm5jJE84UL57',
-    mapEmbedUrl: 'https://www.google.com/maps?q=18.5130815%2C73.8762183&z=16&output=embed',
+    map: {
+      zoom: 16,
+      tileX: 46216,
+      tileY: 29337,
+      markerX: '58.5%',
+      markerY: '52.5%',
+    },
   },
   rsvpWhatsAppNumber: '+91 88057 75117',
   music: {

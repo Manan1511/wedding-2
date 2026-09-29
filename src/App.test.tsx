@@ -49,13 +49,13 @@ describe('wedding invitation content', () => {
     expect(renderInvitation()).toMatch(/<div class="invitation-intro[^\"]*"[^>]*data-artwork-ready="false"/);
   });
 
-  it('offers entry music without fetching the track before a guest plays it', () => {
+  it('starts entry music after the curtain sequence without exposing a guest control', () => {
     const markup = renderInvitation();
 
-    expect(markup).toMatch(/<audio\b(?=[^>]*src="\/audio\/entry-music\.mp3")(?=[^>]*preload="none")[^>]*>/);
-    expect(markup).toContain('class="music-toggle"');
-    expect(markup).toContain('aria-label="Play entry music"');
-    expect(markup).toContain('aria-pressed="false"');
+    expect(markup).toMatch(/<audio\b(?=[^>]*src="\/audio\/entry-music\.mp3")(?=[^>]*preload="metadata")[^>]*>/);
+    expect(markup).not.toContain('class="music-toggle"');
+    expect(markup).not.toContain('Play music');
+    expect(markup).not.toContain('Pause music');
   });
 
   it('replaces the ticking countdown with a touch-friendly scratch reveal', () => {
@@ -76,13 +76,15 @@ describe('wedding invitation content', () => {
     expect(revealButton).not.toContain('aria-pressed=');
   });
 
-  it('presents the ceremony schedule beside an embedded church map', () => {
+  it('presents the ceremony schedule beside a lazy map visual with directions', () => {
     const markup = renderInvitation();
 
     expect(markup).toContain('id="ceremony"');
     expect(markup).toContain('Our Day');
-    expect(markup).toContain('title="Map showing St. Xavier’s Church, Pune"');
-    expect(markup).toMatch(/<iframe\b(?=[^>]*loading="lazy")(?=[^>]*src="https:\/\/www\.google\.com\/maps\?q=18\.5130815%2C73\.8762183&amp;z=16&amp;output=embed)/);
+    expect(markup).toContain('church-map');
+    expect(markup).toContain('Map location for St. Xavier’s Church, Pune');
+    expect(markup).toContain('© OpenStreetMap contributors');
+    expect(markup).not.toContain('<iframe');
     expect(markup).toContain('href="https://maps.app.goo.gl/C6eYegm5jJE84UL57"');
   });
 
