@@ -103,13 +103,15 @@ describe('wedding invitation content', () => {
     expect(heroLink).toContain('aria-hidden="true"');
   });
 
-  it('keeps the scroll cue low on the artwork using lettering-only contrast', () => {
+  it('keeps the scroll cue low on the artwork without a doubled text outline', () => {
     const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
     const cueStyle = invitationStyles.match(/\.hero-scroll-cue\s*\{([^}]*)\}/)?.[1] ?? '';
 
     expect(cueStyle).toMatch(/position:\s*absolute/);
     expect(cueStyle).toMatch(/top:\s*72%/);
-    expect(cueStyle).toMatch(/-webkit-text-stroke\s*:/);
+    expect(cueStyle).toMatch(/color:\s*#17314d/);
+    expect(cueStyle).toMatch(/text-shadow:\s*0 1px 2px rgb\(255 250 240/);
+    expect(cueStyle).not.toMatch(/-webkit-text-stroke\s*:/);
     expect(cueStyle).not.toMatch(/\b(background|border|box-shadow|backdrop-filter)\s*:/);
   });
 
