@@ -90,11 +90,21 @@ describe('wedding invitation content', () => {
 
   it('uses a text label and decorative arrow for the scroll cue', () => {
     const markup = renderInvitation();
-    const heroLink = markup.match(/<a class="hero-link"[^>]*>(.*?)<\/a>/)?.[1] ?? '';
+    const heroLink = markup.match(/<a class="hero-link hero-scroll-cue"[^>]*>(.*?)<\/a>/)?.[1] ?? '';
 
     expect(heroLink).toContain('THE DAY OUR FOREVER BEGINS');
     expect(heroLink).toContain('<svg class="hero-link-arrow"');
     expect(heroLink).toContain('aria-hidden="true"');
+  });
+
+  it('keeps the scroll cue low on the artwork using lettering-only contrast', () => {
+    const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
+    const cueStyle = invitationStyles.match(/\.hero-scroll-cue\s*\{([^}]*)\}/)?.[1] ?? '';
+
+    expect(cueStyle).toMatch(/position:\s*absolute/);
+    expect(cueStyle).toMatch(/top:\s*72%/);
+    expect(cueStyle).toMatch(/-webkit-text-stroke\s*:/);
+    expect(cueStyle).not.toMatch(/\b(background|border|box-shadow|backdrop-filter)\s*:/);
   });
 
   it('keeps the hero names unboxed and vertically centered in the space between the family line and Scripture', () => {

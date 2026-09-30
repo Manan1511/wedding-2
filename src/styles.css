@@ -470,6 +470,23 @@ main {
   transition: gap 180ms ease;
 }
 
+.hero-scroll-cue {
+  position: absolute;
+  z-index: 2;
+  top: 72%;
+  left: 50%;
+  margin-top: 0;
+  color: #fffaf0;
+  text-shadow: 0 1px 1px rgb(18 43 72 / 96%), 0 0 5px rgb(18 43 72 / 88%);
+  -webkit-text-stroke: .55px #122b48;
+  transform: translateX(-50%);
+}
+
+.hero-scroll-cue .hero-link-arrow {
+  color: #f1d39b;
+  filter: drop-shadow(0 1px 1px rgb(18 43 72 / 96%));
+}
+
 .hero-link:hover {
   gap: 18px;
 }
@@ -1689,6 +1706,12 @@ main {
     margin-top: 20px;
     font-size: 10px;
     letter-spacing: .12em;
+  }
+
+  .hero-scroll-cue {
+    top: 74%;
+    max-width: calc(100% - 32px);
+    margin-top: 0;
   }
 
   .hero-bottomline {

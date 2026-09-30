@@ -511,13 +511,13 @@ export default function App() {
               <span className="hero-scripture-text">“{wedding.scripture.text}”</span>
               <span className="hero-scripture-ref">({wedding.scripture.reference})</span>
             </div>
-            <a className="hero-link" href="#our-day">
-              <span className="hero-link-label">THE DAY OUR FOREVER BEGINS</span>
-              <svg className="hero-link-arrow" viewBox="0 0 16 16" aria-hidden="true" fill="none">
-                <path d="M8 2.5v10M4.5 9l3.5 3.5L11.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </a>
           </div>
+          <a className="hero-link hero-scroll-cue" href="#our-day">
+            <span className="hero-link-label">THE DAY OUR FOREVER BEGINS</span>
+            <svg className="hero-link-arrow" viewBox="0 0 16 16" aria-hidden="true" fill="none">
+              <path d="M8 2.5v10M4.5 9l3.5 3.5L11.5 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </a>
 
           <div className="hero-bottomline">
             <span className="hero-corner-label hero-corner-label--navy">BY GOD’S GRACE</span>
