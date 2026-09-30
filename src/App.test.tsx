@@ -110,6 +110,15 @@ describe('wedding invitation content', () => {
     expect(receptionIndex).toBeLessThan(rsvpIndex);
   });
 
+  it('keeps the transition from reception to RSVP compact without changing either section elsewhere', () => {
+    const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
+    const receptionStyle = invitationStyles.match(/\.reception-section\s*\{([^}]*)\}/)?.[1] ?? '';
+    const receptionRsvpStyle = invitationStyles.match(/\.reception-section \+ \.rsvp-section\s*\{([^}]*)\}/)?.[1] ?? '';
+
+    expect(receptionStyle).toMatch(/padding:\s*clamp\(88px, 10vw, 132px\) 24px clamp\(56px, 6vw, 76px\)/);
+    expect(receptionRsvpStyle).toMatch(/padding-top:\s*clamp\(60px, 7vw, 88px\)/);
+  });
+
   it('uses a text label and decorative arrow for the scroll cue', () => {
     const markup = renderInvitation();
     const heroLink = markup.match(/<a class="hero-link hero-scroll-cue"[^>]*>(.*?)<\/a>/)?.[1] ?? '';
