@@ -10,9 +10,10 @@ describe('wedding intro artwork', () => {
     expect(Object.values(wedding.artwork).every((imagePath) => imagePath.endsWith('.webp'))).toBe(true);
   });
 
-  it('keeps the entry music under 350 KB so playback adds little transfer cost', () => {
+  it('uses the Wedding March while keeping entry music under 350 KB', () => {
     const audio = readFileSync(new URL('../../public/audio/entry-music.mp3', import.meta.url));
 
+    expect(audio.toString('latin1')).toContain('Wedding March');
     expect(audio.byteLength).toBeLessThan(350_000);
   });
 
