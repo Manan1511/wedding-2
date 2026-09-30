@@ -781,23 +781,29 @@ main {
 
 .scratch-confetti-piece {
   position: absolute;
-  top: 58%;
+  top: 56%;
   left: var(--confetti-left);
-  width: 7px;
-  height: 12px;
+  width: 9px;
+  height: 18px;
   opacity: 0;
   background: var(--confetti-color);
   transform: translate(-50%, 0) rotate(0deg);
 }
 
-.scratch-confetti-piece.is-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
+.scratch-confetti-piece.is-diamond {
+  width: 12px;
+  height: 12px;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+.scratch-confetti-piece.is-cross {
+  width: 13px;
+  height: 16px;
+  clip-path: polygon(37% 0, 63% 0, 63% 31%, 100% 31%, 100% 56%, 63% 56%, 63% 100%, 37% 100%, 37% 56%, 0 56%, 0 31%, 37% 31%);
 }
 
 .scratch-confetti.is-active .scratch-confetti-piece {
-  animation: scratch-confetti-burst 1.85s cubic-bezier(.18, .72, .27, 1) var(--confetti-delay) both;
+  animation: scratch-confetti-burst 2.35s cubic-bezier(.18, .72, .27, 1) var(--confetti-delay) both;
 }
 
 .scratch-hint {

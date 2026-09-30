@@ -145,7 +145,7 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
     if (launchConfettiBurst(hasCelebrated.current)) {
       hasCelebrated.current = true;
       setConfettiVisible(true);
-      confettiTimer.current = setTimeout(() => setConfettiVisible(false), 2200);
+      confettiTimer.current = setTimeout(() => setConfettiVisible(false), 2900);
     }
   }
 
