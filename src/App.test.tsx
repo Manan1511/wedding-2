@@ -106,13 +106,17 @@ describe('wedding invitation content', () => {
   it('keeps the scroll cue low on the artwork without a doubled text outline', () => {
     const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
     const cueStyle = invitationStyles.match(/\.hero-scroll-cue\s*\{([^}]*)\}/)?.[1] ?? '';
+    const mobileCueStyle = invitationStyles.match(/@media \(max-width: 760px\)\s*\{[\s\S]*?\.hero-scroll-cue\s*\{([^}]*)\}/)?.[1] ?? '';
 
     expect(cueStyle).toMatch(/position:\s*absolute/);
-    expect(cueStyle).toMatch(/top:\s*72%/);
+    expect(cueStyle).toMatch(/top:\s*75%/);
     expect(cueStyle).toMatch(/color:\s*#17314d/);
     expect(cueStyle).toMatch(/text-shadow:\s*0 1px 2px rgb\(255 250 240/);
     expect(cueStyle).not.toMatch(/-webkit-text-stroke\s*:/);
     expect(cueStyle).not.toMatch(/\b(background|border|box-shadow|backdrop-filter)\s*:/);
+    expect(mobileCueStyle).toMatch(/top:\s*78%/);
+    expect(mobileCueStyle).toMatch(/font-size:\s*clamp\(12px, 3\.2vw, 13px\)/);
+    expect(mobileCueStyle).toMatch(/letter-spacing:\s*\.08em/);
   });
 
   it('keeps the hero names unboxed and vertically centered in the space between the family line and Scripture', () => {
