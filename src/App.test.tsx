@@ -110,6 +110,15 @@ describe('wedding invitation content', () => {
     expect(receptionIndex).toBeLessThan(rsvpIndex);
   });
 
+  it('pairs every desktop event card with a map that fills the same row height', () => {
+    const markup = renderInvitation();
+    const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
+
+    expect((markup.match(/class="reveal venue-map-wrap"/g) ?? [])).toHaveLength(2);
+    expect(invitationStyles).toMatch(/@media \(min-width: 761px\)\s*\{[\s\S]*?\.ceremony-event > \.venue-map-wrap\s*\{[\s\S]*?display:\s*flex/);
+    expect(invitationStyles).toMatch(/\.ceremony-event > \.venue-map-wrap > \.ceremony-map\s*\{[\s\S]*?min-height:\s*0[\s\S]*?flex:\s*1/);
+  });
+
   it('keeps the transition from reception to RSVP compact without changing either section elsewhere', () => {
     const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
     const receptionStyle = invitationStyles.match(/\.reception-section\s*\{([^}]*)\}/)?.[1] ?? '';

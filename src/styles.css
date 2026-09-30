@@ -1217,6 +1217,19 @@ main {
   box-shadow: 0 16px 38px rgb(48 43 32 / 9%);
 }
 
+@media (min-width: 761px) {
+  .ceremony-event > .venue-map-wrap {
+    display: flex;
+    min-width: 0;
+  }
+
+  .ceremony-event > .venue-map-wrap > .ceremony-map {
+    width: 100%;
+    min-height: 0;
+    flex: 1;
+  }
+}
+
 .church-map {
   isolation: isolate;
   display: block;
