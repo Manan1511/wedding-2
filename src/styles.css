@@ -512,11 +512,6 @@ main {
   text-shadow: 0 1px 6px rgb(15 24 34 / 42%);
 }
 
-.hero-bottom-flourish {
-  color: #e3ca95;
-  font-size: 14px;
-}
-
 .welcome-section {
   padding: clamp(87px, 11vw, 145px) 24px clamp(94px, 11vw, 148px);
   background: var(--paper);

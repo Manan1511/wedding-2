@@ -103,6 +103,16 @@ describe('wedding invitation content', () => {
     expect(heroLink).toContain('aria-hidden="true"');
   });
 
+  it('keeps the hero bottom line free of emoji-style decorative glyphs', () => {
+    const markup = renderInvitation();
+    const bottomLine = markup.match(/<div class="hero-bottomline">(.*?)<\/div>/)?.[1] ?? '';
+
+    expect(bottomLine).toContain('BY GOD’S GRACE');
+    expect(bottomLine).toContain('PUNE, INDIA');
+    expect(bottomLine).not.toContain('hero-bottom-flourish');
+    expect(bottomLine).not.toContain('✳');
+  });
+
   it('keeps the scroll cue low and full-width so it does not fold on narrow screens', () => {
     const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
     const cueStyle = invitationStyles.match(/\.hero-scroll-cue\s*\{([^}]*)\}/)?.[1] ?? '';

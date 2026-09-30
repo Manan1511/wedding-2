@@ -521,7 +521,6 @@ export default function App() {
 
           <div className="hero-bottomline">
             <span className="hero-corner-label hero-corner-label--navy">BY GOD’S GRACE</span>
-            <span className="hero-bottom-flourish" aria-hidden="true">✳</span>
             <span className="hero-corner-label hero-corner-label--navy">PUNE, INDIA</span>
           </div>
         </section>
