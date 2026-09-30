@@ -103,13 +103,18 @@ describe('wedding invitation content', () => {
     expect(heroLink).toContain('aria-hidden="true"');
   });
 
-  it('keeps the scroll cue low on the artwork without a doubled text outline', () => {
+  it('keeps the scroll cue low and full-width so it does not fold on narrow screens', () => {
     const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
     const cueStyle = invitationStyles.match(/\.hero-scroll-cue\s*\{([^}]*)\}/)?.[1] ?? '';
     const mobileCueStyle = invitationStyles.match(/@media \(max-width: 760px\)\s*\{[\s\S]*?\.hero-scroll-cue\s*\{([^}]*)\}/)?.[1] ?? '';
 
     expect(cueStyle).toMatch(/position:\s*absolute/);
     expect(cueStyle).toMatch(/top:\s*75%/);
+    expect(cueStyle).toMatch(/left:\s*0/);
+    expect(cueStyle).toMatch(/right:\s*0/);
+    expect(cueStyle).toMatch(/justify-content:\s*center/);
+    expect(cueStyle).toMatch(/white-space:\s*nowrap/);
+    expect(cueStyle).toMatch(/transform:\s*none/);
     expect(cueStyle).toMatch(/color:\s*#17314d/);
     expect(cueStyle).toMatch(/font-size:\s*clamp\(11px, \.75vw, 12px\)/);
     expect(cueStyle).toMatch(/letter-spacing:\s*\.10em/);
@@ -117,8 +122,16 @@ describe('wedding invitation content', () => {
     expect(cueStyle).not.toMatch(/-webkit-text-stroke\s*:/);
     expect(cueStyle).not.toMatch(/\b(background|border|box-shadow|backdrop-filter)\s*:/);
     expect(mobileCueStyle).toMatch(/top:\s*78%/);
+    expect(mobileCueStyle).toMatch(/max-width:\s*none/);
     expect(mobileCueStyle).toMatch(/font-size:\s*clamp\(11px, 2\.95vw, 12px\)/);
     expect(mobileCueStyle).toMatch(/letter-spacing:\s*\.07em/);
+  });
+
+  it('allows long content in every invitation column to shrink and wrap safely', () => {
+    const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
+
+    expect(invitationStyles).toMatch(/\.family-group,[\s\S]*?\.closing-copy\s*\{\s*min-width:\s*0/);
+    expect(invitationStyles).toMatch(/\.family-group li,[\s\S]*?\.message-preview pre\s*\{\s*overflow-wrap:\s*anywhere/);
   });
 
   it('keeps the hero names unboxed and vertically centered in the space between the family line and Scripture', () => {
