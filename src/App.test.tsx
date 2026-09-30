@@ -111,12 +111,14 @@ describe('wedding invitation content', () => {
     expect(cueStyle).toMatch(/position:\s*absolute/);
     expect(cueStyle).toMatch(/top:\s*75%/);
     expect(cueStyle).toMatch(/color:\s*#17314d/);
-    expect(cueStyle).toMatch(/text-shadow:\s*0 1px 2px rgb\(255 250 240/);
+    expect(cueStyle).toMatch(/font-size:\s*clamp\(11px, \.75vw, 12px\)/);
+    expect(cueStyle).toMatch(/letter-spacing:\s*\.10em/);
+    expect(cueStyle).toMatch(/text-shadow:\s*0 0 8px rgb\(255 248 229/);
     expect(cueStyle).not.toMatch(/-webkit-text-stroke\s*:/);
     expect(cueStyle).not.toMatch(/\b(background|border|box-shadow|backdrop-filter)\s*:/);
     expect(mobileCueStyle).toMatch(/top:\s*78%/);
-    expect(mobileCueStyle).toMatch(/font-size:\s*clamp\(12px, 3\.2vw, 13px\)/);
-    expect(mobileCueStyle).toMatch(/letter-spacing:\s*\.08em/);
+    expect(mobileCueStyle).toMatch(/font-size:\s*clamp\(11px, 2\.95vw, 12px\)/);
+    expect(mobileCueStyle).toMatch(/letter-spacing:\s*\.07em/);
   });
 
   it('keeps the hero names unboxed and vertically centered in the space between the family line and Scripture', () => {

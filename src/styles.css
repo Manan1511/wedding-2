@@ -477,16 +477,16 @@ main {
   left: 50%;
   margin-top: 0;
   color: #17314d;
-  font-size: clamp(12px, .85vw, 14px);
+  font-size: clamp(11px, .75vw, 12px);
   font-weight: 800;
-  letter-spacing: .12em;
-  text-shadow: 0 1px 2px rgb(255 250 240 / 96%);
+  letter-spacing: .10em;
+  text-shadow: 0 0 8px rgb(255 248 229 / 92%), 0 0 16px rgb(255 248 229 / 62%);
   transform: translateX(-50%);
 }
 
 .hero-scroll-cue .hero-link-arrow {
   color: #94703d;
-  filter: drop-shadow(0 1px 1px rgb(255 250 240 / 96%));
+  filter: drop-shadow(0 0 5px rgb(255 248 229 / 88%));
 }
 
 .hero-link:hover {
@@ -1748,8 +1748,8 @@ main {
     top: 78%;
     max-width: calc(100% - 32px);
     margin-top: 0;
-    font-size: clamp(12px, 3.2vw, 13px);
-    letter-spacing: .08em;
+    font-size: clamp(11px, 2.95vw, 12px);
+    letter-spacing: .07em;
   }
 
   .hero-bottomline {
