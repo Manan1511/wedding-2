@@ -772,6 +772,34 @@ main {
   transform: scale(1.025);
 }
 
+.scratch-confetti {
+  position: absolute;
+  z-index: 4;
+  inset: -18px;
+  pointer-events: none;
+}
+
+.scratch-confetti-piece {
+  position: absolute;
+  top: 58%;
+  left: var(--confetti-left);
+  width: 7px;
+  height: 12px;
+  opacity: 0;
+  background: var(--confetti-color);
+  transform: translate(-50%, 0) rotate(0deg);
+}
+
+.scratch-confetti-piece.is-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.scratch-confetti.is-active .scratch-confetti-piece {
+  animation: scratch-confetti-burst 1.85s cubic-bezier(.18, .72, .27, 1) var(--confetti-delay) both;
+}
+
 .scratch-hint {
   position: absolute;
   z-index: 3;
@@ -1866,6 +1894,20 @@ main {
   50% { transform: translateY(2.5px); }
 }
 
+@keyframes scratch-confetti-burst {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) rotate(0deg) scale(.5);
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--confetti-drift)), var(--confetti-rise)) rotate(var(--confetti-rotation)) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1884,6 +1926,11 @@ main {
   .hero-link-arrow {
     animation: none;
     transform: none;
+  }
+
+  .scratch-confetti.is-active .scratch-confetti-piece {
+    animation: none;
+    opacity: 0;
   }
 
   .intro-curtain,

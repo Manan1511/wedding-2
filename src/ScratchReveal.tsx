@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import type { PointerEvent as ReactPointerEvent } from 'react';
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
+import { champagneConfettiPieces, launchConfettiBurst } from './content/confetti';
 import { resizeScratchCanvas } from './content/scratchCanvas';
 
 interface ScratchRevealProps {
@@ -22,11 +23,18 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
   const previousPoint = useRef<ScratchPoint | null>(null);
   const movesSinceCheck = useRef(0);
   const hasScratched = useRef(false);
+  const hasCelebrated = useRef(false);
+  const confettiTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const textureRef = useRef<HTMLImageElement | null>(null);
   const [nearViewport, setNearViewport] = useState(false);
   const [coatingReady, setCoatingReady] = useState(false);
   const [interactionStarted, setInteractionStarted] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  const [confettiVisible, setConfettiVisible] = useState(false);
+
+  useEffect(() => () => {
+    if (confettiTimer.current !== null) clearTimeout(confettiTimer.current);
+  }, []);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -128,10 +136,17 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
   }, [nearViewport, textureSrc]);
 
   function revealDateAndTime() {
+    if (revealed) return;
     isDrawing.current = false;
     activePointerId.current = null;
     setInteractionStarted(true);
     setRevealed(true);
+
+    if (launchConfettiBurst(hasCelebrated.current)) {
+      hasCelebrated.current = true;
+      setConfettiVisible(true);
+      confettiTimer.current = setTimeout(() => setConfettiVisible(false), 2200);
+    }
   }
 
   function eraseAt(point: ScratchPoint, from: ScratchPoint | null = null) {
@@ -241,6 +256,22 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
             onPointerUp={handlePointerEnd}
             onPointerCancel={handlePointerEnd}
           />
+          <div className={`scratch-confetti${confettiVisible ? ' is-active' : ''}`} aria-hidden="true">
+            {champagneConfettiPieces.map((piece, index) => (
+              <span
+                className={`scratch-confetti-piece ${piece.shape}`}
+                key={index}
+                style={{
+                  '--confetti-color': piece.color,
+                  '--confetti-delay': `${piece.delay}ms`,
+                  '--confetti-drift': `${piece.drift}px`,
+                  '--confetti-left': `${piece.left}%`,
+                  '--confetti-rise': `${piece.rise}px`,
+                  '--confetti-rotation': `${piece.rotation}deg`,
+                } as CSSProperties}
+              />
+            ))}
+          </div>
           {!interactionStarted && !revealed && (
             <div className="scratch-hint" aria-hidden="true">
               <span>SCRATCH HERE</span>
