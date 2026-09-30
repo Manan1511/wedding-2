@@ -6,6 +6,7 @@ import { introTimeline, shouldPlayIntro, waitForIntroArtwork } from './content/i
 import { setEntryMusicPlayback } from './content/music';
 import { buildChurchMapTileUrls } from './content/churchMap';
 import { coupleNames, wedding } from './content/wedding';
+import type { WeddingConfig } from './content/wedding';
 import { ScratchReveal } from './ScratchReveal';
 
 const ceremonyTime = new Date(wedding.ceremony.dateTime);
@@ -27,6 +28,12 @@ const weddingTime = new Intl.DateTimeFormat('en-IN', {
   hour12: true,
   timeZone: 'Asia/Kolkata',
 }).format(ceremonyTime);
+const receptionTime = new Intl.DateTimeFormat('en-IN', {
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true,
+  timeZone: 'Asia/Kolkata',
+}).format(new Date(wedding.reception.dateTime));
 
 function CrossMark({ className = '' }: { className?: string }) {
   return (
@@ -146,13 +153,13 @@ function SaveTheDate() {
   );
 }
 
-function ChurchMap() {
+function VenueMap({ location, marker }: { location: WeddingConfig['ceremony']; marker: string }) {
   const mapRef = useRef<HTMLElement>(null);
   const [tilesVisible, setTilesVisible] = useState(false);
   const tileUrls = buildChurchMapTileUrls({
-    x: wedding.ceremony.map.tileX,
-    y: wedding.ceremony.map.tileY,
-    zoom: wedding.ceremony.map.zoom,
+    x: location.map.tileX,
+    y: location.map.tileY,
+    zoom: location.map.zoom,
   });
 
   useEffect(() => {
@@ -177,7 +184,7 @@ function ChurchMap() {
 
   return (
     <figure className={`ceremony-map church-map${tilesVisible ? ' is-ready' : ''}`} ref={mapRef}>
-      <figcaption className="sr-only">Map location for St. Xavier’s Church, Pune</figcaption>
+      <figcaption className="sr-only">Map location for {location.address}</figcaption>
       {tilesVisible && (
         <div className="church-map-tiles" aria-hidden="true">
           {tileUrls.map((tileUrl) => <img key={tileUrl} src={tileUrl} alt="" loading="lazy" draggable={false} />)}
@@ -186,11 +193,11 @@ function ChurchMap() {
       <span
         className="church-map-pin"
         aria-hidden="true"
-        style={{ left: wedding.ceremony.map.markerX, top: wedding.ceremony.map.markerY }}
+        style={{ left: location.map.markerX, top: location.map.markerY }}
       >
-        <span>✝</span>
+        <span>{marker}</span>
       </span>
-      <span className="church-map-place">St. Xavier’s Church</span>
+      <span className="church-map-place">{location.venue}</span>
       <a className="church-map-attribution" href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">
         © OpenStreetMap contributors
       </a>
@@ -221,11 +228,41 @@ function CeremonySection() {
             </a>
           </Reveal>
           <Reveal delay={220}>
-            <ChurchMap />
+            <VenueMap location={wedding.ceremony} marker="✝" />
           </Reveal>
         </div>
       </div>
       <div className="ceremony-footer-line" aria-hidden="true"><span /><CrossMark /><span /></div>
+    </section>
+  );
+}
+
+function ReceptionSection() {
+  return (
+    <section className="reception-section" id="reception" aria-labelledby="reception-title">
+      <div className="ceremony-layout">
+        <Reveal className="ceremony-intro">
+          <p className="eyebrow">THE RECEPTION</p>
+          <h2 id="reception-title">Then,<br /><em>we celebrate.</em></h2>
+          <p className="ceremony-body">Join us for an evening of celebration as we gather with the people we love.</p>
+        </Reveal>
+        <div className="ceremony-event">
+          <Reveal className="ceremony-details" delay={130}>
+            <div className="detail-topline"><span className="eyebrow">THE RECEPTION</span><span className="detail-star" aria-hidden="true">✦</span></div>
+            <h3 className="ceremony-details-title">Celebrate with us</h3>
+            <p className="detail-date">{weddingDate}</p>
+            <div className="detail-divider" aria-hidden="true" />
+            <p className="detail-time">{receptionTime} onwards</p>
+            <p className="detail-place">{wedding.reception.venue}<br /><span>{wedding.reception.city}</span></p>
+            <a className="text-link" href={wedding.reception.mapUrl} target="_blank" rel="noreferrer">
+              View venue <span aria-hidden="true">↗</span>
+            </a>
+          </Reveal>
+          <Reveal delay={220}>
+            <VenueMap location={wedding.reception} marker="•" />
+          </Reveal>
+        </div>
+      </div>
     </section>
   );
 }
@@ -558,6 +595,7 @@ export default function App() {
         />
         <SaveTheDate />
         <CeremonySection />
+        <ReceptionSection />
         <RsvpSection />
         <ClosingSection />
       </main>

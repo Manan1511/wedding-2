@@ -25,6 +25,20 @@ export interface WeddingConfig {
       markerY: string;
     };
   };
+  reception: {
+    dateTime: string;
+    venue: string;
+    city: string;
+    address: string;
+    mapUrl: string;
+    map: {
+      zoom: number;
+      tileX: number;
+      tileY: number;
+      markerX: string;
+      markerY: string;
+    };
+  };
   rsvpWhatsAppNumber: string;
   music: {
     entryTrack: string;
@@ -65,6 +79,20 @@ export const wedding: WeddingConfig = {
       tileY: 29337,
       markerX: '58.5%',
       markerY: '52.5%',
+    },
+  },
+  reception: {
+    dateTime: '2026-12-26T18:00:00+05:30',
+    venue: 'The Imperial Hall',
+    city: 'The Corinthians Resorts and Club, Pune',
+    address: 'The Imperial Hall, The Corinthians Resorts and Club, Pune',
+    mapUrl: 'https://maps.app.goo.gl/sJ23yCjgjnBZE7iR7',
+    map: {
+      zoom: 16,
+      tileX: 46224,
+      tileY: 29347,
+      markerX: '54.1%',
+      markerY: '33.9%',
     },
   },
   rsvpWhatsAppNumber: '+91 88057 75117',

@@ -1048,6 +1048,12 @@ main {
   background: #ede6d8;
 }
 
+.reception-section {
+  padding: clamp(88px, 10vw, 132px) 24px;
+  color: var(--navy);
+  background: var(--paper);
+}
+
 .ceremony-layout {
   display: grid;
   width: min(100%, 1160px);

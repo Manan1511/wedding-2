@@ -94,6 +94,22 @@ describe('wedding invitation content', () => {
     expect(markup).toContain('href="https://maps.app.goo.gl/C6eYegm5jJE84UL57"');
   });
 
+  it('places the reception and its lazy venue map between ceremony and RSVP', () => {
+    const markup = renderInvitation();
+    const ceremonyIndex = markup.indexOf('id="ceremony"');
+    const receptionIndex = markup.indexOf('id="reception"');
+    const rsvpIndex = markup.indexOf('id="rsvp"');
+
+    expect(markup).toContain('THE RECEPTION');
+    expect(markup).toContain('6:00 pm onwards');
+    expect(markup).toContain('The Imperial Hall');
+    expect(markup).toContain('The Corinthians Resorts and Club, Pune');
+    expect(markup).toContain('Map location for The Imperial Hall, The Corinthians Resorts and Club, Pune');
+    expect(markup).toContain('href="https://maps.app.goo.gl/sJ23yCjgjnBZE7iR7"');
+    expect(receptionIndex).toBeGreaterThan(ceremonyIndex);
+    expect(receptionIndex).toBeLessThan(rsvpIndex);
+  });
+
   it('uses a text label and decorative arrow for the scroll cue', () => {
     const markup = renderInvitation();
     const heroLink = markup.match(/<a class="hero-link hero-scroll-cue"[^>]*>(.*?)<\/a>/)?.[1] ?? '';
