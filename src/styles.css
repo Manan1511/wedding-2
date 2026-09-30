@@ -775,13 +775,13 @@ main {
 .scratch-confetti {
   position: absolute;
   z-index: 4;
-  inset: -18px;
+  inset: 0;
   pointer-events: none;
 }
 
 .scratch-confetti-piece {
   position: absolute;
-  top: 56%;
+  top: 62%;
   left: var(--confetti-left);
   width: 9px;
   height: 18px;

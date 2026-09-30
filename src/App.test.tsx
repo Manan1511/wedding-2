@@ -76,6 +76,12 @@ describe('wedding invitation content', () => {
     expect(revealButton).not.toContain('aria-pressed=');
   });
 
+  it('anchors the celebration burst to the full scratch section instead of the card', () => {
+    const markup = renderInvitation();
+
+    expect(markup).toMatch(/<section class="scratch-section"[^>]*><div class="scratch-confetti"/);
+  });
+
   it('presents the ceremony schedule beside a lazy map visual with directions', () => {
     const markup = renderInvitation();
 
