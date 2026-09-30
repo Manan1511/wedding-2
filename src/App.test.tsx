@@ -114,7 +114,8 @@ describe('wedding invitation content', () => {
     const markup = renderInvitation();
     const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
 
-    expect((markup.match(/class="reveal venue-map-wrap"/g) ?? [])).toHaveLength(2);
+    expect((markup.match(/class="venue-map-wrap"/g) ?? [])).toHaveLength(2);
+    expect(markup).not.toContain('class="reveal venue-map-wrap"');
     expect(invitationStyles).toMatch(/@media \(min-width: 761px\)\s*\{[\s\S]*?\.ceremony-event > \.venue-map-wrap\s*\{[\s\S]*?display:\s*flex/);
     expect(invitationStyles).toMatch(/\.ceremony-event > \.venue-map-wrap > \.ceremony-map\s*\{[\s\S]*?min-height:\s*0[\s\S]*?flex:\s*1/);
   });

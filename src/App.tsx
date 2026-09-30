@@ -227,9 +227,9 @@ function CeremonySection() {
               Find the church <span aria-hidden="true">↗</span>
             </a>
           </Reveal>
-          <Reveal className="venue-map-wrap" delay={220}>
+          <div className="venue-map-wrap">
             <VenueMap location={wedding.ceremony} marker="✝" />
-          </Reveal>
+          </div>
         </div>
       </div>
       <div className="ceremony-footer-line" aria-hidden="true"><span /><CrossMark /><span /></div>
@@ -258,9 +258,9 @@ function ReceptionSection() {
               View venue <span aria-hidden="true">↗</span>
             </a>
           </Reveal>
-          <Reveal className="venue-map-wrap" delay={220}>
+          <div className="venue-map-wrap">
             <VenueMap location={wedding.reception} marker="•" />
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>
