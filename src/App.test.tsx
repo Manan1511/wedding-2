@@ -223,7 +223,7 @@ describe('wedding invitation content', () => {
     expect(monogramStyle).toMatch(/align-items:\s*center/);
     expect(monogramStyle).toMatch(/line-height:\s*1/);
     expect(ampersandStyle).toMatch(/transform:\s*translateY\(\.05em\)/);
-    expect(ampersandStyle).toMatch(/margin-inline-end:\s*5px/);
+    expect(ampersandStyle).toMatch(/margin-inline-end:\s*13px/);
   });
 
   it('sets the couple monogram as the browser tab icon', () => {

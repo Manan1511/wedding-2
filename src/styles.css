@@ -977,7 +977,7 @@ main {
 }
 
 .postcard-ampersand {
-  margin-inline-end: 5px;
+  margin-inline-end: 13px;
   color: var(--gold-light);
   font-family: var(--script);
   font-size: 42px;
