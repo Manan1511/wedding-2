@@ -212,7 +212,7 @@ describe('wedding invitation content', () => {
     expect(scriptWordStyle).not.toMatch(/padding-left\s*:/);
   });
 
-  it('centers the save-the-date initials and optically raises the ampersand', () => {
+  it('centers the save-the-date initials and optically lowers the ampersand', () => {
     const markup = renderInvitation();
     const invitationStyles = readFileSync(new URL('./styles.css', import.meta.url), 'utf8');
     const monogramStyle = invitationStyles.match(/\.postcard-monogram\s*\{([^}]*)\}/)?.[1] ?? '';
@@ -222,7 +222,8 @@ describe('wedding invitation content', () => {
     expect(markup).toContain('class="postcard-ampersand"');
     expect(monogramStyle).toMatch(/align-items:\s*center/);
     expect(monogramStyle).toMatch(/line-height:\s*1/);
-    expect(ampersandStyle).toMatch(/transform:\s*translateY\(-\.08em\)/);
+    expect(ampersandStyle).toMatch(/transform:\s*translateY\(\.05em\)/);
+    expect(ampersandStyle).toMatch(/margin-inline-end:\s*5px/);
   });
 
   it('sets the couple monogram as the browser tab icon', () => {

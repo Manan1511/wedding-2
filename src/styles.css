@@ -977,11 +977,12 @@ main {
 }
 
 .postcard-ampersand {
+  margin-inline-end: 5px;
   color: var(--gold-light);
   font-family: var(--script);
   font-size: 42px;
   line-height: 1;
-  transform: translateY(-.08em);
+  transform: translateY(.05em);
 }
 
 .postcard-branch {
