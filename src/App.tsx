@@ -136,7 +136,11 @@ function SaveTheDate() {
           <div className="postcard-arch">
             <CrossMark className="postcard-cross" />
             <p>WITH GOD AT THE CENTRE</p>
-            <div className="postcard-monogram">{wedding.couple.firstName.charAt(0)} <span>&amp;</span> {wedding.couple.secondName.charAt(0)}</div>
+            <div className="postcard-monogram">
+              <span className="postcard-initial">{wedding.couple.firstName.charAt(0)}</span>
+              <span className="postcard-ampersand">&amp;</span>
+              <span className="postcard-initial">{wedding.couple.secondName.charAt(0)}</span>
+            </div>
             <BranchMark className="postcard-branch" />
           </div>
         </div>

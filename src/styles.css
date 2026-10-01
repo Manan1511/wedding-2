@@ -961,19 +961,27 @@ main {
 
 .postcard-monogram {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 11px;
   margin-top: 12px;
   color: #fff7e9;
   font-family: var(--serif);
   font-size: 49px;
   font-weight: 400;
+  line-height: 1;
 }
 
-.postcard-monogram span {
+.postcard-initial {
+  display: inline-block;
+  line-height: 1;
+}
+
+.postcard-ampersand {
   color: var(--gold-light);
   font-family: var(--script);
   font-size: 42px;
+  line-height: 1;
+  transform: translateY(-.08em);
 }
 
 .postcard-branch {
