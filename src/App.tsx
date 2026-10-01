@@ -481,7 +481,7 @@ export default function App() {
   }, [introPhase]);
 
   useEffect(() => {
-    document.title = `${coupleNames} | ${weddingDate}`;
+    document.title = 'Travis Weds Sayali';
 
     const targets = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

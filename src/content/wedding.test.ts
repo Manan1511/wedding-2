@@ -6,6 +6,13 @@ import { buildRsvpMessage, buildWhatsAppUrl, isValidRsvpResponse } from './rsvp'
 import { wedding } from './wedding';
 
 describe('wedding intro artwork', () => {
+  it('uses Travis Weds Sayali as the invitation metadata', () => {
+    expect(invitationHtml).toContain('<title>Travis Weds Sayali</title>');
+    expect(invitationHtml).toContain('name="description" content="Travis Weds Sayali, a Christian wedding invitation celebrating love, faith, and family."');
+    expect(invitationHtml).toContain('property="og:title" content="Travis Weds Sayali"');
+    expect(invitationHtml).toContain('property="og:description" content="Travis Weds Sayali, a Christian wedding invitation celebrating love, faith, and family."');
+  });
+
   it('uses compressed WebP files for every image served by the invitation', () => {
     expect(Object.values(wedding.artwork).every((imagePath) => imagePath.endsWith('.webp'))).toBe(true);
   });

@@ -51,11 +51,19 @@ describe('wedding invitation content', () => {
 
   it('starts entry music after the curtain sequence without exposing a guest control', () => {
     const markup = renderInvitation();
+    const appSource = readFileSync(new URL('./App.tsx', import.meta.url), 'utf8');
 
     expect(markup).toMatch(/<audio\b(?=[^>]*src="\/audio\/entry-music\.mp3")(?=[^>]*preload="metadata")[^>]*>/);
     expect(markup).not.toContain('class="music-toggle"');
     expect(markup).not.toContain('Play music');
     expect(markup).not.toContain('Pause music');
+    expect(appSource).toContain("if (introPhase !== 'done') return;");
+    expect(appSource).toContain('void setEntryMusicPlayback(audio, true);');
+    expect(appSource).toContain("document.title = 'Travis Weds Sayali';");
+    expect(appSource).toContain('const retryAfterGesture');
+    expect(appSource).toContain('if (audio.paused) void setEntryMusicPlayback(audio, true);');
+    expect(appSource).toContain("window.addEventListener('pointerdown', retryAfterGesture, { once: true });");
+    expect(appSource).toContain("window.addEventListener('keydown', retryAfterGesture, { once: true });");
   });
 
   it('replaces the ticking countdown with a touch-friendly scratch reveal', () => {
