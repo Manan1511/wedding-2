@@ -57,7 +57,7 @@ describe('wedding RSVP helpers', () => {
     );
 
     expect(message).toBe(
-      "Wedding RSVP for Grace & Daniel\n\nName: Asha Patel\nGuests: 2\nMessage: Vegetarian meal, please.",
+      "Wedding RSVP for Grace & Daniel, Pune\n\nName: Asha Patel\nGuests: 2\nMessage: Vegetarian meal, please.",
     );
   });
 

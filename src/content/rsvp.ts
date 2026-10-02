@@ -13,7 +13,7 @@ export function isValidRsvpResponse(response: RsvpResponse): boolean {
 export function buildRsvpMessage(response: RsvpResponse, coupleNames: string): string {
   const name = response.guestName.trim();
   const details = [
-    `Wedding RSVP for ${coupleNames}`,
+    `Wedding RSVP for ${coupleNames}, Pune`,
     '',
     `Name: ${name}`,
     `Guests: ${response.guestCount}`,
