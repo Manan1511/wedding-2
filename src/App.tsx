@@ -536,7 +536,6 @@ export default function App() {
             <a className="monogram hero-corner-label hero-corner-label--champagne" href="#home" aria-label={`${coupleNames} wedding invitation`}>
               <span>{wedding.couple.firstName.charAt(0)}</span><i>&amp;</i><span>{wedding.couple.secondName.charAt(0)}</span>
             </a>
-            <span className="hero-top-date hero-corner-label hero-corner-label--champagne">{shortWeddingDate}</span>
           </div>
 
           <div className="hero-copy">
