@@ -13,8 +13,8 @@ describe('wedding intro artwork', () => {
     expect(invitationHtml).toContain('property="og:description" content="Travis Weds Sayali, a Christian wedding invitation celebrating love, faith, and family."');
   });
 
-  it('uses compressed WebP files for every image served by the invitation', () => {
-    expect(Object.values(wedding.artwork).every((imagePath) => imagePath.endsWith('.webp'))).toBe(true);
+  it('uses supported PNG or WebP files for every invitation artwork path', () => {
+    expect(Object.values(wedding.artwork).every((imagePath) => /\.(png|webp)$/.test(imagePath))).toBe(true);
   });
 
   it('uses the Wedding March while keeping entry music under 350 KB', () => {

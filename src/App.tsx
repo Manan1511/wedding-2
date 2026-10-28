@@ -148,7 +148,7 @@ function SaveTheDate() {
           <p className="eyebrow">A DATE TO KEEP</p>
           <h2 id="save-title">Save the<br /><em>date</em></h2>
           <p className="postcard-date">{shortWeddingDate}</p>
-          <span className="gold-rule" aria-hidden="true" />
+          <span className="sage-rule" aria-hidden="true" />
           <p className="postcard-caption">For a joyful day of faith, family,<br />and the beginning of forever.</p>
         </div>
         <span className="postcard-number" aria-hidden="true">01 / 01</span>
@@ -343,7 +343,7 @@ function RsvpSection() {
               />
             </label>
 
-            <button className="button button-navy rsvp-submit" type="submit">
+            <button className="button button-blue rsvp-submit" type="submit">
               RSVP <span aria-hidden="true">↗</span>
             </button>
 
@@ -533,7 +533,7 @@ export default function App() {
           </picture>
           <div className="hero-grain" aria-hidden="true" />
           <div className="hero-topline">
-            <a className="monogram hero-corner-label hero-corner-label--champagne" href="#home" aria-label={`${coupleNames} wedding invitation`}>
+            <a className="monogram hero-corner-label hero-corner-label--ivory" href="#home" aria-label={`${coupleNames} wedding invitation`}>
               <span>{wedding.couple.firstName.charAt(0)}</span><i>&amp;</i><span>{wedding.couple.secondName.charAt(0)}</span>
             </a>
           </div>
@@ -560,8 +560,8 @@ export default function App() {
           </a>
 
           <div className="hero-bottomline">
-            <span className="hero-corner-label hero-corner-label--navy">BY GOD’S GRACE</span>
-            <span className="hero-corner-label hero-corner-label--navy">PUNE, INDIA</span>
+            <span className="hero-corner-label hero-corner-label--blue">BY GOD’S GRACE</span>
+            <span className="hero-corner-label hero-corner-label--blue">PUNE, INDIA</span>
           </div>
         </section>
 

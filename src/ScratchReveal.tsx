@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
-import { champagneConfettiPieces, launchConfettiBurst } from './content/confetti';
+import { sageBlueConfettiPieces, launchConfettiBurst } from './content/confetti';
 import { resizeScratchCanvas } from './content/scratchCanvas';
 
 interface ScratchRevealProps {
@@ -65,9 +65,9 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
 
     const drawFallbackCoating = (width: number, height: number) => {
       const gradient = context.createLinearGradient(0, 0, width, height);
-      gradient.addColorStop(0, '#d8c18f');
-      gradient.addColorStop(0.48, '#f1e5c9');
-      gradient.addColorStop(1, '#c4a86f');
+      gradient.addColorStop(0, '#9daf9b');
+      gradient.addColorStop(0.48, '#e3eae1');
+      gradient.addColorStop(1, '#5d765e');
       context.fillStyle = gradient;
       context.fillRect(0, 0, width, height);
       context.save();
@@ -106,11 +106,16 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
       const texture = textureRef.current;
       if (texture?.complete && texture.naturalWidth > 0) {
         context.drawImage(texture, 0, 0, bounds.width, bounds.height);
+        context.save();
+        context.globalCompositeOperation = 'source-atop';
+        context.fillStyle = 'rgb(93 118 94 / 22%)';
+        context.fillRect(0, 0, bounds.width, bounds.height);
+        context.restore();
       } else {
         drawFallbackCoating(bounds.width, bounds.height);
       }
 
-      context.strokeStyle = 'rgb(255 250 240 / 0.78)';
+      context.strokeStyle = 'rgb(248 250 246 / 0.78)';
       context.lineWidth = 1;
       context.strokeRect(12, 12, bounds.width - 24, bounds.height - 24);
       setCoatingReady(true);
@@ -230,7 +235,7 @@ export function ScratchReveal({ date, dateTime, textureSrc, time }: ScratchRevea
   return (
     <section className="scratch-section" ref={sectionRef} aria-labelledby="scratch-title">
       <div className={`scratch-confetti${confettiVisible ? ' is-active' : ''}`} aria-hidden="true">
-        {champagneConfettiPieces.map((piece, index) => (
+        {sageBlueConfettiPieces.map((piece, index) => (
           <span
             className={`scratch-confetti-piece ${piece.shape}`}
             key={index}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { champagneConfettiPieces, launchConfettiBurst } from './confetti';
+import { sageBlueConfettiPieces, launchConfettiBurst } from './confetti';
 
 describe('scratch reveal confetti', () => {
   it('launches the celebration only for the first date reveal', () => {
@@ -7,12 +7,12 @@ describe('scratch reveal confetti', () => {
     expect(launchConfettiBurst(true)).toBe(false);
   });
 
-  it('uses visible paper shapes in a champagne and gold palette', () => {
-    expect(champagneConfettiPieces).toHaveLength(30);
-    expect(new Set(champagneConfettiPieces.map((piece) => piece.color))).toEqual(
-      new Set(['#f8ebc7', '#d5b06a', '#fff7df', '#b98a3d']),
+  it('uses visible paper shapes in a sage green and blue palette', () => {
+    expect(sageBlueConfettiPieces).toHaveLength(30);
+    expect(new Set(sageBlueConfettiPieces.map((piece) => piece.color))).toEqual(
+      new Set(['#e3eae1', '#5d765e', '#f8faf6', '#243f5b']),
     );
-    expect(new Set(champagneConfettiPieces.map((piece) => piece.shape))).toEqual(
+    expect(new Set(sageBlueConfettiPieces.map((piece) => piece.shape))).toEqual(
       new Set(['is-ribbon', 'is-diamond', 'is-cross']),
     );
   });
