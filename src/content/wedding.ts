@@ -100,12 +100,12 @@ export const wedding: WeddingConfig = {
     entryTrack: '/audio/entry-music.mp3',
   },
   artwork: {
-    hero: '/images/wedding-hero-sketch-sage.png',
-    heroWide: '/images/wedding-hero-wide-sketch-sage.png',
-    bouquet: '/images/wedding-bouquet-sketch-sage.png',
-    closing: '/images/wedding-blessing-sketch-sage.png',
-    curtain: '/images/wedding-curtain-watercolor-sage.png',
-    curtainWide: '/images/wedding-curtain-watercolor-wide-sage.png',
+    hero: '/images/wedding-hero-sketch-sage.webp',
+    heroWide: '/images/wedding-hero-wide-sketch-sage.webp',
+    bouquet: '/images/wedding-bouquet-sketch-sage.webp',
+    closing: '/images/wedding-blessing-sketch-sage.webp',
+    curtain: '/images/wedding-curtain-watercolor-sage.webp',
+    curtainWide: '/images/wedding-curtain-watercolor-wide-sage.webp',
     scratchSurface: '/images/scratch-champagne.webp',
   },
 };
